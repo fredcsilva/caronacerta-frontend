@@ -1,0 +1,6 @@
+<!-- Só mostra o menu-bar padrão em rotas que NÃO têm menu customizado -->
+<app-menu-bar *ngIf="!hasCustomMenuBar()"></app-menu-bar>
+
+<div class="router-container">
+  <router-outlet></router-outlet>
+</div>

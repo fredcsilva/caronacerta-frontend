@@ -1,0 +1,81 @@
+@import 'primeicons/primeicons.css';
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/Nunito-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/Nunito-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('assets/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('assets/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'OpenSans', sans-serif;
+  background-color: #F1F8E9;
+  color: #424242;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  body {
+    max-width: 860px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito', sans-serif;
+}
+
+:root {
+  --primary-color: #7E57C2;
+  --secondary-color: #81C784;
+  --background-color: #F1F8E9;
+  --text-color: #424242;
+  --text-on-primary: #FFFFFF;
+}
+
+button, a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+input, select, textarea {
+  font-size: 16px !important;
+}

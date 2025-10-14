@@ -1,0 +1,40 @@
+.listar-caronas-container {
+  min-height: 100vh;
+  background-color: #F1F8E9;
+  padding-top: 72px; /* ✅ ADICIONAR - Espaço para o menu-bar fixo */
+}
+
+.content-wrapper {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-wrapper h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #424242;
+  margin-bottom: 20px;
+}
+
+.content-wrapper p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  color: #666666;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .listar-caronas-container {
+    padding-top: 64px; /* ✅ Ajuste para mobile */
+  }
+
+  .content-wrapper {
+    padding: 16px;
+  }
+
+  .content-wrapper h1 {
+    font-size: 20px;
+  }
+}

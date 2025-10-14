@@ -1,0 +1,57 @@
+<div class="boas-vindas-container">
+  <p-toast></p-toast>
+
+  <!-- Menu-bar Dinâmico -->
+  <app-menu-bar 
+    title="Cadastro Complementar"
+    [showLogoutButton]="true">
+  </app-menu-bar>
+
+  <div class="content-wrapper">
+    <p-card>
+      <div class="welcome-content">
+        <div class="icon-circle">
+          <i class="pi pi-check-circle"></i>
+        </div>
+
+        <h2>Complete seu cadastro</h2>
+        
+        <p class="descricao">
+          Para aproveitar ao máximo nossa plataforma de caronas colaborativas, 
+          precisamos de algumas informações adicionais.
+        </p>
+
+        <div class="beneficios">
+          <div class="beneficio-item">
+            <i class="pi pi-shield"></i>
+            <span>Mais segurança para você e sua comunidade</span>
+          </div>
+          <div class="beneficio-item">
+            <i class="pi pi-users"></i>
+            <span>Conecte-se com moradores do seu condomínio</span>
+          </div>
+          <div class="beneficio-item">
+            <i class="pi pi-car"></i>
+            <span>Ofereça ou pegue caronas com praticidade</span>
+          </div>
+        </div>
+
+        <p class="tempo-estimado">
+          <i class="pi pi-clock"></i>
+          Tempo estimado: 3 minutos
+        </p>
+
+        <div class="button-container">
+          <p-button 
+            label="Começar" 
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            styleClass="p-button-primary p-button-lg"
+            [loading]="loading"
+            (onClick)="iniciarCadastro()">
+          </p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

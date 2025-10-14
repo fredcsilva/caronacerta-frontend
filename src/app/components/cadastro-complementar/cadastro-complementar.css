@@ -1,0 +1,485 @@
+.cadastro-container {
+  min-height: calc(100vh - 56px);
+  height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  padding: 1rem;
+}
+
+/* Customização do Stepper Vertical */
+:host ::ng-deep .custom-stepper {
+  background: transparent;
+}
+
+:host ::ng-deep p-stepper[orientation="vertical"] {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+:host ::ng-deep p-stepper[orientation="vertical"] .p-stepper-list {
+  flex: 0 0 200px;
+}
+
+:host ::ng-deep p-stepper[orientation="vertical"] .p-stepper-panels {
+  flex: 1;
+}
+
+/* Step Content */
+.step-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Icon Section */
+.icon-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.icon-main {
+  font-size: 3.5rem;
+  color: var(--primary-color);
+  background: linear-gradient(135deg, rgba(126, 87, 194, 0.1) 0%, rgba(126, 87, 194, 0.05) 100%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(126, 87, 194, 0.2);
+}
+
+.icon-success {
+  font-size: 4rem;
+  color: var(--secondary-color);
+  background: linear-gradient(135deg, rgba(129, 199, 132, 0.15) 0%, rgba(129, 199, 132, 0.05) 100%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(129, 199, 132, 0.3);
+}
+
+/* Subtitle Section */
+.subtitle-section {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.subtitle-text {
+  font-family: 'OpenSans', sans-serif;
+  font-size: 0.9375rem;
+  color: rgba(66, 66, 66, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Form Section */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-family: 'OpenSans', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Input customization */
+:host ::ng-deep .input-field {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(66, 66, 66, 0.2);
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  color: var(--text-color);
+}
+
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-inputmask {
+  width: 100%;
+}
+
+:host ::ng-deep .p-calendar .p-inputtext,
+:host ::ng-deep .p-inputmask {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(66, 66, 66, 0.2);
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  color: var(--text-color);
+}
+
+:host ::ng-deep .p-calendar .p-inputtext:focus,
+:host ::ng-deep .p-inputmask:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
+}
+
+/* Dropdown customization */
+:host ::ng-deep .custom-dropdown {
+  width: 100%;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown {
+  width: 100%;
+  border: 1px solid rgba(66, 66, 66, 0.2);
+  border-radius: 8px;
+  background-color: #FFFFFF;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown .p-dropdown-label {
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
+}
+
+/* File Upload customization */
+:host ::ng-deep .custom-upload .p-button {
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-size: 0.9375rem !important;
+}
+
+:host ::ng-deep .custom-upload .p-button:hover {
+  background-color: #66BB6A !important;
+}
+
+/* TabView customization */
+:host ::ng-deep .custom-tabview {
+  margin-bottom: 1.5rem;
+}
+
+:host ::ng-deep .custom-tabview .p-tabview-nav {
+  background: transparent;
+  border-bottom: 2px solid rgba(66, 66, 66, 0.1);
+}
+
+:host ::ng-deep .custom-tabview .p-tabview-nav li .p-tabview-nav-link {
+  font-family: 'OpenSans', sans-serif;
+  color: rgba(66, 66, 66, 0.7);
+  padding: 1rem;
+}
+
+:host ::ng-deep .custom-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 600;
+}
+
+:host ::ng-deep .custom-tabview .p-tabview-panels {
+  background: transparent;
+  padding: 1.5rem 0;
+}
+
+/* Terms Content */
+.terms-content {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(66, 66, 66, 0.1);
+}
+
+.terms-content h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin: 0 0 1rem 0;
+}
+
+.terms-content h4 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--text-color);
+  margin: 1rem 0 0.5rem 0;
+}
+
+.terms-content p {
+  font-family: 'OpenSans', sans-serif;
+  font-size: 0.9375rem;
+  color: rgba(66, 66, 66, 0.8);
+  line-height: 1.6;
+  margin: 0 0 0.75rem 0;
+}
+
+/* Confirmation Content */
+.confirmation-content {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(66, 66, 66, 0.1);
+}
+
+.confirmation-content h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin: 0 0 1rem 0;
+}
+
+.confirmation-content > p {
+  font-family: 'OpenSans', sans-serif;
+  font-size: 0.9375rem;
+  color: rgba(66, 66, 66, 0.8);
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.checkbox-label {
+  font-family: 'OpenSans', sans-serif;
+  font-size: 0.9375rem;
+  color: var(--text-color);
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.5;
+  padding-top: 0.125rem;
+}
+
+/* Checkbox customization */
+:host ::ng-deep .p-checkbox {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid rgba(66, 66, 66, 0.3);
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.back-button {
+  flex: 1;
+  background-color: transparent !important;
+  border: 2px solid var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  font-size: 1.125rem !important;
+  padding: 0.875rem 2rem !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.back-button:hover {
+  background-color: rgba(126, 87, 194, 0.05) !important;
+}
+
+.submit-button {
+  flex: 1;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--text-on-primary) !important;
+  font-size: 1.125rem !important;
+  padding: 0.875rem 2rem !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(126, 87, 194, 0.3);
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(126, 87, 194, 0.4);
+  background-color: #6A47A8 !important;
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Success Content */
+.success-content {
+  text-align: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.success-section {
+  margin-bottom: 2rem;
+}
+
+.success-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.success-text {
+  font-family: 'OpenSans', sans-serif;
+  font-size: 1rem;
+  color: rgba(66, 66, 66, 0.7);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 360px) {
+  .cadastro-container {
+    padding: 0.5rem;
+  }
+
+  .step-content {
+    padding: 0.75rem;
+  }
+
+  .icon-main {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
+  }
+
+  .icon-success {
+    font-size: 3.5rem;
+    width: 100px;
+    height: 100px;
+  }
+
+  .subtitle-text {
+    font-size: 0.875rem;
+  }
+
+  .form-section {
+    gap: 1rem;
+  }
+
+  .terms-content {
+    max-height: 250px;
+    padding: 0.75rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .success-title {
+    font-size: 1.5rem;
+  }
+
+  .success-text {
+    font-size: 0.9375rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .cadastro-container {
+    padding: 2rem;
+  }
+
+  .step-content {
+    padding: 2rem;
+    max-width: 700px;
+  }
+
+  .icon-main {
+    font-size: 4.5rem;
+    width: 130px;
+    height: 130px;
+  }
+
+  .icon-success {
+    font-size: 5rem;
+    width: 150px;
+    height: 150px;
+  }
+
+  .subtitle-text {
+    font-size: 1.125rem;
+  }
+
+  .form-section {
+    gap: 1.5rem;
+  }
+
+  .terms-content {
+    max-height: 400px;
+    padding: 1.5rem;
+  }
+
+  .success-title {
+    font-size: 2.25rem;
+  }
+
+  .success-text {
+    font-size: 1.125rem;
+  }
+
+  .submit-button,
+  .back-button {
+    font-size: 1.25rem !important;
+  }
+}

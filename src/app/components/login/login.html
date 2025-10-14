@@ -1,0 +1,96 @@
+<div class="login-container">
+  <div class="login-content">
+    
+    <!-- Mensagem de erro/sucesso no topo -->
+    @if (showMessage) {
+      <div class="message-container">
+        <p-message 
+          [severity]="messageSeverity" 
+          [text]="messageText"
+          styleClass="message-full-width">
+        </p-message>
+      </div>
+    }
+
+    <!-- Header -->
+    <div class="login-header">
+      <h1 class="welcome-title">Olá, Efetue Login!</h1>
+    </div>
+
+    <!-- Form -->
+    <form class="login-form" (ngSubmit)="onLogin()">
+      <!-- Email Field -->
+      <div class="form-field">
+        <label for="email" class="field-label">Email</label>
+        <input 
+          pInputText 
+          id="email" 
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="seu.email@exemplo.com"
+          class="input-field"
+          autocomplete="email"
+          (focus)="onFieldFocus()"
+          [disabled]="isLoading"
+          required
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-field">
+        <label for="password" class="field-label">Senha</label>
+        <p-password 
+          [(ngModel)]="password"
+          name="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Digite sua senha"
+          styleClass="custom-password"
+          inputStyleClass="password-input"
+          [inputStyle]="{'width': '100%'}"
+          (onFocus)="onFieldFocus()">
+        </p-password>
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="form-options">
+        <div class="remember-me">
+          <p-checkbox 
+            [(ngModel)]="rememberMe"
+            name="rememberMe"
+            [binary]="true"
+            inputId="rememberMe"
+            [disabled]="isLoading"
+          />
+          <label for="rememberMe" class="remember-label">Lembrar-me</label>
+        </div>
+        <a class="forgot-password" (click)="goToForgotPassword()">
+          Esqueceu a senha?
+        </a>
+      </div>
+
+      <!-- Login Button -->
+      <button 
+        pButton 
+        pRipple
+        type="submit"
+        [label]="isLoading ? 'Entrando...' : 'Entrar'"
+        [loading]="isLoading"
+        [disabled]="isLoading"
+        class="login-button">
+      </button>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span class="divider-text">Ou</span>
+      </div>
+
+      <!-- New User Link -->
+      <div class="new-user-section">
+        <span class="new-user-text">Não fez seu cadastro ainda?</span>
+        <a class="new-user-link" (click)="goToNewUser()">Faça Agora!</a>
+      </div>
+    </form>
+  </div>
+</div>
