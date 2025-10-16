@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Toast } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
-import { MenuBarComponent } from '../menu-bar/menu-bar'; // ✅ ADICIONAR
+import { MenuItem } from 'primeng/api';
+import { DockModule } from 'primeng/dock';
+import { TooltipModule } from 'primeng/tooltip';
+import { RippleModule } from 'primeng/ripple';
+import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
 
 @Component({
   selector: 'app-listar-caronas',
   standalone: true,
-  imports: [
-    CommonModule,
-    Toast,
-    MenuBarComponent // ✅ ADICIONAR
-  ],
-  providers: [MessageService],
+  imports: [CommonModule, DockModule, TooltipModule, RippleModule, BottomNavComponent],
   templateUrl: './listar-caronas.html',
-  styleUrl: './listar-caronas.css'
+  styleUrls: ['./listar-caronas.css']
 })
 export class ListarCaronasComponent implements OnInit {
-  
-  constructor(private messageService: MessageService) {}
+  dockItems: MenuItem[] = [];
 
   ngOnInit(): void {
-    console.log('📋 Página Listar Caronas carregada');
+    this.dockItems = [
+      { label: 'Caronas', icon: 'pi pi-car', tooltipOptions: { tooltipLabel: 'Minhas Caronas' } },
+      { label: 'Histórico', icon: 'pi pi-history', tooltipOptions: { tooltipLabel: 'Histórico' } },
+      { label: 'Nova Carona', icon: 'pi pi-plus-circle', tooltipOptions: { tooltipLabel: 'Nova Carona' }, styleClass: 'destaque' },
+      { label: 'Solicitações', icon: 'pi pi-file-check', tooltipOptions: { tooltipLabel: 'Solicitações' } },
+      { label: 'Menu', icon: 'pi pi-bars', tooltipOptions: { tooltipLabel: 'Menu' } }
+    ];
   }
 }
