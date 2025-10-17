@@ -4,15 +4,29 @@
 }
 
 .listar-caronas-container {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   min-height: 100vh;
-  display: block;
+
   background: linear-gradient(135deg, #F1F8E9 0%, #E8F5E9 100%);
   box-sizing: border-box;
 
-  /* Compensa o menu fixo superior */
-  margin-top: 72px;
-  padding: 1.5rem 1rem 100px;
+  /* Compensa o menu superior fixo */
+  padding-top: calc(var(--menu-bar-height, 80px) + 8px);
+
+  /* 🔹 Compensa o bottom-nav fixo (baseado no seu layout real) */
+  padding-bottom: 110px; /* ⬅️ altura exata da barra inferior + sombra */
+
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
+
+
+.listar-caronas-container {
+  padding-bottom: var(--bottom-nav-height);
+}
+
 
 .content {
   padding: 1.5rem;
@@ -60,4 +74,29 @@
   .content {
     padding: 1rem;
   }
+}
+
+app-card-carona {
+  display: block;
+  width: 100%;
+}
+
+.lista-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: calc(100vh - 200px); /* 🔹 ajusta conforme seu menu/topo */
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.lista-cards::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lista-cards::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 6px;
 }
