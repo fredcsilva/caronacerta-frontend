@@ -4,7 +4,6 @@ import { LoginComponent } from './components/login/login';
 import { NovoUsuarioComponent } from './components/novo-usuario/novo-usuario';
 import { EsqueciSenhaComponent } from './components/esqueci-senha/esqueci-senha';
 import { AlterarSenhaComponent } from './components/alterar-senha/alterar-senha';
-import { CadastroComplementarComponent } from './components/cadastro-complementar/cadastro-complementar';
 import { ListarCaronasComponent } from './components/listar-caronas/listar-caronas';
 import { TelaSucessoComponent } from './components/tela-sucesso/tela-sucesso';
 
@@ -55,14 +54,7 @@ export const routes: Routes = [
     data: { animation: 'AlterarSenhaPage' }
   },
   
-  // ===== FLUXO DE CADASTRO COMPLEMENTAR (PROTEGIDO) =====
-  // Rota antiga (mantida para compatibilidade)
-  { 
-    path: 'cadastro-complementar', 
-    component: CadastroComplementarComponent,
-    data: { animation: 'CadastroComplementarPage' }
-  },
-  
+  // ===== FLUXO DE CADASTRO COMPLEMENTAR (PROTEGIDO) =====  
   // ✅ Rotas protegidas pelo guard
   {
     path: 'cadastro-complementar-boas-vindas',
