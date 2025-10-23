@@ -1,0 +1,93 @@
+<div class="dados-pessoais-container">
+  <p-toast></p-toast>
+
+  <div class="content-wrapper">
+    <p-card>
+      <!-- Header -->
+      <div class="card-header">
+        <h1>Dados Pessoais</h1>
+        <p>Passo 1 de 3</p>
+      </div>
+
+      <div class="card-content">
+
+        <!-- ✅ Botão Logout -->
+        <button class="logout-button-content" (click)="logout()" title="Sair">
+          <i class="pi pi-sign-out"></i>
+        </button>
+
+        <form [formGroup]="dadosPessoaisForm" (ngSubmit)="salvarDadosPessoais()">
+
+          <!-- Data de Nascimento -->
+          <div class="field">
+            <label for="dataNascimento">Data de Nascimento *</label>
+            <p-datepicker
+              inputId="dataNascimento"
+              formControlName="dataNascimento"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              [minDate]="minDataNascimento"
+              [maxDate]="maxDataNascimento"
+              placeholder="Selecione sua data de nascimento"
+              [fluid]="true"
+              [class.ng-invalid]="dadosPessoaisForm.get('dataNascimento')?.invalid && dadosPessoaisForm.get('dataNascimento')?.touched"
+            ></p-datepicker>
+            <small class="p-error" *ngIf="dadosPessoaisForm.get('dataNascimento')?.hasError('required') && dadosPessoaisForm.get('dataNascimento')?.touched">
+              Data de nascimento é obrigatória.
+            </small>
+          </div>
+
+          <!-- Telefone -->
+          <div class="field">
+            <label for="telefone">Telefone *</label>
+            <p-inputmask
+              inputId="telefone"
+              formControlName="telefone"
+              mask="(99) 99999-9999"
+              placeholder="(00) 00000-0000"
+              [fluid]="true"
+              [class.ng-invalid]="dadosPessoaisForm.get('telefone')?.invalid && dadosPessoaisForm.get('telefone')?.touched"
+            ></p-inputmask>
+            <small class="p-error" *ngIf="dadosPessoaisForm.get('telefone')?.hasError('required') && dadosPessoaisForm.get('telefone')?.touched">
+              Telefone é obrigatório.
+            </small>
+            <small class="p-error" *ngIf="dadosPessoaisForm.get('telefone')?.hasError('minlength') && dadosPessoaisForm.get('telefone')?.touched">
+              Telefone deve ter 11 dígitos.
+            </small>
+          </div>
+
+          <!-- Gênero -->
+          <div class="field">
+            <label for="genero">Gênero *</label>
+            <p-select
+              inputId="genero"
+              formControlName="genero"
+              [options]="generoOptions"
+              placeholder="Selecione seu gênero"
+              optionLabel="label"
+              optionValue="value"
+              [fluid]="true"
+              [class.ng-invalid]="dadosPessoaisForm.get('genero')?.invalid && dadosPessoaisForm.get('genero')?.touched"
+            ></p-select>
+            <small class="p-error" *ngIf="dadosPessoaisForm.get('genero')?.hasError('required') && dadosPessoaisForm.get('genero')?.touched">
+              Gênero é obrigatório.
+            </small>
+          </div>
+
+          <!-- ✅ Botão Próximo -->
+          <div class="button-group">
+           <p-button
+              type="submit"
+              label="Próximo"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+              styleClass="p-button-primary w-full"
+              [loading]="loading"
+              [disabled]="dadosPessoaisForm.invalid"
+            ></p-button>
+          </div>
+        </form>
+      </div>
+    </p-card>
+  </div>
+</div>

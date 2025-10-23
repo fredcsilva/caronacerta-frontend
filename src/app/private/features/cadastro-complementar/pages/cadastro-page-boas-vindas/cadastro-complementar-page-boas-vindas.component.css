@@ -1,0 +1,166 @@
+.boas-vindas-container {
+  min-height: 100vh;
+  max-height: 100vh;
+  background-color: #F1F8E9;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+::ng-deep .p-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background: linear-gradient(135deg, #7E57C2 0%, #9575CD 100%);
+  padding: 2rem;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #FFFFFF;
+}
+
+.card-header i {
+  font-size: 4rem;
+}
+
+.card-header h1 {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.welcome-content {
+  padding: 2rem;
+  text-align: center;
+}
+
+h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #424242;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.descricao {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.1rem;
+  color: #424242;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.beneficios {
+  background-color: #F1F8E9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.beneficio-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.beneficio-item:last-child {
+  margin-bottom: 0;
+}
+
+.beneficio-item i {
+  font-size: 1.5rem;
+  color: #7E57C2;
+  min-width: 30px;
+}
+
+.beneficio-item span {
+  font-family: 'Open Sans', sans-serif;
+  color: #424242;
+  font-size: 1rem;
+}
+
+.tempo-estimado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Open Sans', sans-serif;
+  color: #7E57C2;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tempo-estimado i {
+  font-size: 1.2rem;
+}
+
+.button-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .button-container .p-button {
+  width: 100%;
+  max-width: 300px;
+}
+
+::ng-deep .p-card-footer {
+  padding: 0 2rem 2rem;
+}
+
+::ng-deep .p-button-lg {
+  padding: 1rem 2.5rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+::ng-deep .p-button-primary {
+  background-color: #7E57C2;
+  border-color: #7E57C2;
+}
+
+::ng-deep .p-button-primary:hover {
+  background-color: #6A4FA3;
+  border-color: #6A4FA3;
+}
+
+@media (max-width: 768px) {
+  .card-header h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .descricao {
+    font-size: 1rem;
+  }
+
+  .beneficio-item span {
+    font-size: 0.95rem;
+  }
+}
