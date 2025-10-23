@@ -1,0 +1,188 @@
+.card-carona {
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 0.2rem;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* 🔹 Reduz o espaçamento vertical interno do conteúdo do card */
+:host ::ng-deep .p-card .p-card-body {
+  padding: 0.25rem 0.4rem; /* Reduz altura (vertical) */
+}
+
+:host ::ng-deep .p-card .p-card-content {
+  padding: 0.2rem 0; /* Remove parte do padding interno */
+  margin-top: 0;      /* Elimina espaçamento entre body e content */
+}
+
+
+/* ---------- LINHA SUPERIOR (motorista + hora/data) ---------- */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- MOTORISTA --- */
+.motorista {
+  display: flex;
+  align-items: center;
+}
+
+.motorista img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 0.6rem;
+}
+
+.nome {
+  font-weight: bold;
+}
+
+.dados small {
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.endereco {
+  font-size: 0.85rem;
+  color: #757575;
+}
+
+/* --- HORA E DATA --- */
+.hora-data {
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+/* ---------- ROTAS (origem → destino) ---------- */
+.rotas {
+  display: flex;
+  align-items: flex-start;
+}
+
+.rotas-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.2rem;
+}
+
+.linha-rota {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rotas-texto span {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Ícones de origem e destino */
+.origem-icon {
+  font-size: 0.7rem;
+  color: #7E57C2; /* roxo */
+}
+
+.destino-icon {
+  font-size: 0.7rem;
+  color: #4CAF50; /* verde */
+}
+
+/* ---------- LINHA-MEIO (⋮ + ícones de usuários) ---------- */
+.linha-meio {
+  display: flex;
+  justify-content: space-between; /* ⋮ à esquerda, usuários à direita */
+  align-items: center;
+  width: 100%;
+  margin-left: 0.3rem;
+}
+
+.rotas-linha {
+  font-size: 1.3rem;
+  color: #999;
+}
+
+/* ---------- ÍCONES DE USUÁRIOS (círculos coloridos) ---------- */
+.usuarios-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
+  flex-grow: 1;
+}
+
+.usuario-circulo {
+  width: 18px;   
+  height: 18px;  
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.usuario-icon {
+  font-size: 0.6rem; /* 🔹 reduzido ~10% */
+  color: #9e9393;    /* cinza médio */
+}
+
+/* Cores dos círculos */
+.roxo-escuro {
+  background-color: #6A1B9A;
+}
+
+.verde-claro {
+  background-color: #A5D6A7;
+}
+/* ---------- BOTÃO RESERVAR ---------- */
+.btn-reservar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;   /* 🔹 ancora o botão na parte inferior */  
+  padding-bottom: 0;       /* 🔹 remove espaçamento extra */
+  margin-bottom: -4px;     /* 🔹 aproxima um pouco do limite inferior */
+}
+
+.btn-reservar p-button {
+  font-size: 0.9rem;
+  transform: translateY(2px); /* 🔹 pequeno ajuste visual de 2px */
+}
+
+/* ---------- RODAPÉ (ações + valor) ---------- */
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.acao {
+  font-size: 1.3rem;
+  color: #4CAF50;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.acao:last-child {
+  margin-right: 0;
+}
+
+.valor {
+  text-align: right;
+  color: #2e7d32;
+}
+
+.valor strong {
+  font-size: 1.1rem;
+}
+
+/* Container horizontal para rotas + botão */
+.rotas-e-botao {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 1rem;
+}
+
