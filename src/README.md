@@ -1,240 +1,272 @@
-# 🚗 Carona Certa
+# 🚗 Carona Certa - Frontend
 
-> Sistema de caronas colaborativas para condomínios residenciais
+Aplicação web para gerenciamento e compartilhamento de caronas em condomínios.
 
-[![Angular](https://img.shields.io/badge/Angular-20-red)](https://angular.io/)
-[![PrimeNG](https://img.shields.io/badge/PrimeNG-20.2.0-blue)](https://primeng.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+## 📋 Índice
 
-## 📋 Sobre o Projeto
-
-**Carona Certa** é uma aplicação web/mobile que conecta moradores de condomínios residenciais para oferecer e solicitar caronas. O sistema beneficia todos os envolvidos:
-
-- 💰 **Passageiros**: Economizam com transporte
-- 💵 **Motoristas**: Geram renda extra
-- 🏢 **Condomínio**: Recebe parte do valor para melhorias aprovadas pelos moradores
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Tecnologias](#tecnologias)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Instalação](#instalação)
+- [Desenvolvimento](#desenvolvimento)
+- [Rotas da Aplicação](#rotas-da-aplicação)
+- [Arquitetura](#arquitetura)
+- [Build e Deploy](#build-e-deploy)
 
 ---
 
-## ✨ Funcionalidades
+## 🎯 Sobre o Projeto
 
-### 🔐 Autenticação
-- [x] Login com email e senha
-- [x] Registro de novos usuários
-- [x] Recuperação de senha
-- [x] Verificação de email
-- [x] "Lembrar-me" com senha criptografada (AES-256)
-- [x] Logout seguro
+O **Carona Certa** é uma plataforma que conecta moradores de condomínios para compartilhamento de caronas, promovendo economia, sustentabilidade e convivência comunitária.
 
-### 👤 Cadastro Complementar (Fluxo Progressivo)
-- [x] Boas-vindas
-- [x] Dados pessoais (data de nascimento, telefone, gênero)
-- [x] Dados do condomínio (país, estado, nome, bloco, apartamento)
-- [x] Aceite de termos e políticas
-- [x] Confirmação de sucesso
-- [x] Sistema de guards para controle de acesso
+### Funcionalidades Principais
 
-### 🚙 Sistema de Caronas (Em Desenvolvimento)
-- [ ] Listagem de caronas disponíveis
-- [ ] Oferecer carona
-- [ ] Solicitar carona
-- [ ] Sistema de pagamento (Pix)
-- [ ] Avaliações e feedback
-- [ ] Histórico de caronas
+- ✅ Sistema de autenticação e autorização
+- ✅ Cadastro complementar por etapas (wizard)
+- ✅ Gerenciamento de caronas (CRUD)
+- ✅ Áreas públicas e privadas bem definidas
+- ✅ Interface responsiva e intuitiva
 
 ---
 
-## 🛠️ Stack Tecnológica
+## 🛠️ Tecnologias
 
-### Frontend
-- **Framework**: Angular 20
-- **UI Library**: PrimeNG 20.2.0
-- **Tema**: @primeng/themes (Aura preset)
-- **Tipografia**: 
-  - Títulos: Nunito (Regular 400, Bold 700)
-  - Corpo: Open Sans (Regular 400, SemiBold 600)
-- **Animações**: HammerJS para gestos touch
-- **Criptografia**: CryptoJS (AES-256)
-- **Estilo**: Mobile-first, responsivo, aparência de app nativo
-
-### Backend (Planejado)
-- **Linguagem**: Java 21
-- **Framework**: Spring Boot
-- **Banco de Dados**: Firebase Firestore
-- **Autenticação**: Firebase Authentication
-- **Pagamentos**: Integração Pix
-- **Mapa**: Google Maps API
-
-### Servidor de Email
-- **Runtime**: Node.js (porta 3000)
-- **Biblioteca**: Resend
-- **Rotas disponíveis**:
-  - `/email/boas-vindas`
-  - `/email/recuperar-senha`
-  - `/email/notificacao`
-  - `/email/com-anexo`
-
----
-
-## 🎨 Design System
-
-### Paleta de Cores
-```css
---primary-color: #7E57C2;      /* Roxo médio - identidade principal */
---secondary-color: #81C784;    /* Verde menta - ações positivas */
---background-color: #F1F8E9;   /* Bege claro */
---text-color: #424242;         /* Cinza escuro */
---text-on-primary: #FFFFFF;    /* Branco */
-```
-
-### Componentes
-- Menu-bar fixo com título centralizado
-- Feedback tátil (vibração em dispositivos compatíveis)
-- Efeito ripple nos botões
-- Animações suaves de transição
-- Layout 70-30 (conteúdo/ações)
-
----
-
-## 🚀 Como Executar
-
-### Pré-requisitos
-
-- Node.js 18+ ([Download](https://nodejs.org/))
-- npm ou yarn
-- Angular CLI 20+
-
-```bash
-npm install -g @angular/cli@20
-```
-
-### Instalação
-
-1. **Clone o repositório**
-```bash
-git clone https://github.com/seu-usuario/carona-certa-frontend.git
-cd carona-certa-frontend
-```
-
-2. **Instale as dependências**
-```bash
-npm install
-```
-
-3. **Configure as variáveis de ambiente**
-
-Crie o arquivo `src/environments/environment.ts`:
-
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080/api'
-};
-```
-
-Para produção, crie `src/environments/environment.prod.ts`:
-
-```typescript
-export const environment = {
-  production: true,
-  apiUrl: 'https://api.caronacerta.com.br/api'
-};
-```
-
-4. **Execute o servidor de desenvolvimento**
-```bash
-ng serve
-```
-
-5. **Acesse no navegador**
-```
-http://localhost:4200
-```
+- **Angular 20** - Framework principal
+- **TypeScript** - Linguagem de programação
+- **Standalone Components** - Arquitetura moderna do Angular
+- **Lazy Loading** - Carregamento sob demanda
+- **RxJS** - Programação reativa
+- **Guards** - Proteção de rotas
 
 ---
 
 ## 📁 Estrutura do Projeto
-
 ```
-src/
-├── app/
+src/app/
+├── core/                           # Módulo singleton - Serviços globais
+│   ├── guards/                     # Guards de autenticação e autorização
+│   │   └── cadastro-complementar.guard.ts
+│   ├── models/                     # Interfaces e tipos globais
+│   │   └── auth.types.ts
+│   └── services/                   # Serviços compartilhados
+│       ├── auth.service.ts
+│       ├── encryption.service.ts
+│       ├── haptic.service.ts
+│       └── user.service.ts
+│
+├── shared/                         # Componentes reutilizáveis
 │   ├── components/
-│   │   ├── boas-vindas/                    # Tela inicial
-│   │   ├── login/                          # Autenticação
-│   │   ├── novo-usuario/                   # Registro
-│   │   ├── esqueci-senha/                  # Recuperação de senha
-│   │   ├── alterar-senha/                  # Alteração de senha
-│   │   ├── cadastro-complementar-boas-vindas/
-│   │   ├── cadastro-complementar-dados-pessoais/
-│   │   ├── cadastro-complementar-condominio/
-│   │   ├── cadastro-complementar-termos/
-│   │   ├── cadastro-complementar-sucesso/
-│   │   ├── listar-caronas/                 # Dashboard principal
-│   │   └── menu-bar/                       # Componente de navegação
-│   │
-│   ├── services/
-│   │   ├── auth.services.ts                # Serviços de autenticação
-│   │   ├── user.service.ts                 # Gerenciamento de usuário
-│   │   ├── cadastro-complementar-service.ts
-│   │   ├── encryption.service.ts           # Criptografia AES-256
-│   │   └── haptic.service.ts               # Feedback tátil
-│   │
-│   ├── guards/
-│   │   └── cadastro-complementar.guard.ts  # Proteção de rotas
-│   │
-│   ├── app.routes.ts                       # Configuração de rotas
-│   └── app.config.ts                       # Configuração global
+│   │   ├── card-carona/           # Card de exibição de carona
+│   │   ├── menu-bar/              # Barra de menu (público + privado)
+│   │   └── tela-sucesso-page/     # Tela genérica de sucesso
+│   └── ui/                        # Componentes UI genéricos
 │
-├── assets/
-│   ├── fonts/                              # Nunito e Open Sans
-│   └── images/                             # Imagens do carousel
+├── public/                         # Área Pública (sem autenticação)
+│   ├── pages/
+│   │   ├── boas-vindas-page/      # Landing page / Home
+│   │   ├── auth-page-login/       # Login
+│   │   ├── auth-page-novo-usuario/ # Cadastro
+│   │   ├── auth-page-esqueci-senha/ # Recuperação de senha
+│   │   └── auth-page-alterar-senha/ # Alteração de senha
+│   └── public.routes.ts           # Rotas públicas
 │
-└── environments/
-    ├── environment.ts                      # Config desenvolvimento
-    └── environment.prod.ts                 # Config produção
+├── private/                        # Área Privada (requer autenticação)
+│   ├── features/                   # Funcionalidades modulares
+│   │   │
+│   │   ├── cadastro-complementar/ # Feature: Wizard de cadastro
+│   │   │   ├── components/
+│   │   │   │   └── botao-wizard/  # Botão de navegação do wizard
+│   │   │   ├── pages/
+│   │   │   │   ├── cadastro-page-boas-vindas/
+│   │   │   │   ├── cadastro-page-dados-pessoais/
+│   │   │   │   ├── cadastro-page-condominio/
+│   │   │   │   ├── cadastro-page-termos/
+│   │   │   │   └── cadastro-page-sucesso/
+│   │   │   ├── services/
+│   │   │   │   └── cadastro-complementar.service.ts
+│   │   │   └── cadastro-complementar.routes.ts
+│   │   │
+│   │   └── caronas/               # Feature: CRUD de Caronas
+│   │       ├── components/         # Componentes reutilizáveis de carona
+│   │       ├── models/             # Interfaces de carona
+│   │       ├── pages/
+│   │       │   └── carona-page-listar/ # Listagem de caronas
+│   │       ├── services/           # Serviços de carona
+│   │       └── caronas.routes.ts
+│   │
+│   ├── layout/                     # Componentes de layout privado
+│   │   └── bottom-nav/            # Navegação inferior (mobile)
+│   │
+│   └── private.routes.ts          # Rotas privadas
+│
+├── assets/                         # Recursos estáticos
+│   ├── fonts/                     # Fontes customizadas
+│   └── images/                    # Imagens e ícones
+│
+├── environments/                   # Configurações de ambiente
+│   └── environment.ts
+│
+├── app.component.ts               # Componente raiz
+├── app.config.ts                  # Configuração da aplicação
+└── app.routes.ts                  # Rotas principais
 ```
 
 ---
 
-## 🔒 Segurança
+## 🚀 Instalação
 
-### Autenticação
-- ✅ JWT Tokens com expiração
-- ✅ Verificação de email obrigatória
-- ✅ Refresh tokens automáticos
-- ✅ Logout seguro (invalida tokens no backend)
+### Pré-requisitos
 
-### Armazenamento de Credenciais
-- ✅ Senhas criptografadas com **AES-256**
-- ✅ Chave baseada no dispositivo (binding)
-- ✅ Tokens em localStorage (permanente) ou sessionStorage (temporário)
-- ✅ Limpeza automática de tokens inválidos
+- Node.js 18+ 
+- npm ou yarn
+- Angular CLI 20+
 
-### Guards de Rota
-- ✅ Proteção do fluxo de cadastro complementar
-- ✅ Verificação de posição do usuário
-- ✅ Redirecionamento automático
+### Passos
+```bash
+# 1. Clonar o repositório
+git clone <url-do-repositorio>
+cd carona-certa-frontend
+
+# 2. Instalar dependências
+npm install
+
+# 3. Configurar variáveis de ambiente
+# Editar src/environments/environment.ts conforme necessário
+
+# 4. Rodar aplicação
+ng serve
+
+# 5. Acessar no navegador
+# http://localhost:4200
+```
 
 ---
 
-## 🧪 Testes
+## 💻 Desenvolvimento
 
+### Comandos Úteis
 ```bash
-# Testes unitários
+# Servidor de desenvolvimento
+ng serve
+
+# Servidor com porta customizada
+ng serve --port 4300
+
+# Build de desenvolvimento
+ng build
+
+# Build de produção
+ng build --configuration production
+
+# Rodar testes
 ng test
 
-# Testes e2e
-ng e2e
+# Gerar componente
+ng generate component caminho/nome-componente --standalone
 
-# Coverage
-ng test --code-coverage
+# Gerar serviço
+ng generate service caminho/nome-service
+```
+
+### Padrões de Código
+
+- **Nomenclatura de arquivos**: `nome-componente.component.ts`
+- **Nomenclatura de classes**: `NomeComponenteComponent`
+- **Standalone components**: Todos os componentes são standalone
+- **Lazy loading**: Features carregadas sob demanda
+- **TypeScript strict mode**: Habilitado
+
+---
+
+## 🗺️ Rotas da Aplicação
+
+### Rotas Públicas
+
+| Rota | Componente | Descrição |
+|------|-----------|-----------|
+| `/` | `BoasVindasPageComponent` | Landing page / Home |
+| `/login` | `AuthPageLoginComponent` | Página de login |
+| `/cadastro` | `AuthPageNovoUsuarioComponent` | Cadastro de novo usuário |
+| `/esqueci-senha` | `AuthPageEsqueciSenhaComponent` | Recuperação de senha |
+| `/alterar-senha` | `AuthPageAlterarSenhaComponent` | Alteração de senha |
+
+### Rotas Privadas (requer autenticação)
+
+| Rota | Componente | Guard | Descrição |
+|------|-----------|-------|-----------|
+| `/app/cadastro-complementar/boas-vindas` | `CadastroPageBoasVindasComponent` | `cadastroComplementarGuard` | Wizard - Passo 1 |
+| `/app/cadastro-complementar/dados-pessoais` | `CadastroPageDadosPessoaisComponent` | `cadastroComplementarGuard` | Wizard - Passo 2 |
+| `/app/cadastro-complementar/condominio` | `CadastroPageCondominioComponent` | `cadastroComplementarGuard` | Wizard - Passo 3 |
+| `/app/cadastro-complementar/termos` | `CadastroPageTermosComponent` | `cadastroComplementarGuard` | Wizard - Passo 4 |
+| `/app/cadastro-complementar/sucesso` | `CadastroPageSucessoComponent` | `cadastroComplementarGuard` | Wizard - Conclusão |
+| `/app/caronas/listar` | `CaronaPageListarComponent` | - | Lista de caronas |
+| `/app/caronas/nova` | `CaronaPageCriarComponent` | - | Criar nova carona |
+| `/app/caronas/:id` | `CaronaPageDetalhesComponent` | - | Detalhes da carona |
+| `/app/caronas/:id/editar` | `CaronaPageEditarComponent` | - | Editar carona |
+
+---
+
+## 🏗️ Arquitetura
+
+### Separação de Responsabilidades
+
+#### **Core Module**
+- Serviços singleton (AuthService, UserService)
+- Guards globais
+- Modelos compartilhados
+- **Regra**: Importado apenas uma vez no app
+
+#### **Shared Module**
+- Componentes reutilizáveis em múltiplas features
+- Componentes de UI genéricos
+- **Regra**: Sem lógica de negócio, apenas apresentação
+
+#### **Public Area**
+- Páginas acessíveis sem autenticação
+- Landing page e fluxo de autenticação
+- **Regra**: Sem guards de autenticação
+
+#### **Private Area**
+- Features organizadas por funcionalidade
+- Cada feature é autocontida (pages, components, services, models)
+- **Regra**: Protegida por guards de autenticação
+
+### Guards
+
+#### `authGuard`
+- Protege toda a área privada (`/app/*`)
+- Verifica se o usuário está autenticado
+- Redireciona para `/login` se não autenticado
+
+#### `cadastroComplementarGuard`
+- Protege o wizard de cadastro complementar
+- Verifica se o usuário precisa completar o cadastro
+- Permite navegação apenas se cadastro incompleto
+
+### Fluxo de Autenticação
+```
+1. Usuário acessa /app/*
+   ↓
+2. authGuard verifica autenticação
+   ↓
+3. Se não autenticado → redireciona para /login
+   ↓
+4. Se autenticado → permite acesso
+   ↓
+5. Se acessa /app/cadastro-complementar/*
+   ↓
+6. cadastroComplementarGuard verifica se cadastro está completo
+   ↓
+7. Se completo → redireciona para /app/caronas
+   ↓
+8. Se incompleto → permite acesso ao wizard
 ```
 
 ---
 
-## 📦 Build para Produção
+## 📦 Build e Deploy
 
+### Build de Produção
 ```bash
 # Build otimizado
 ng build --configuration production
@@ -242,73 +274,95 @@ ng build --configuration production
 # Arquivos gerados em: dist/carona-certa-frontend/
 ```
 
+### Configurações de Ambiente
+
+Edite os arquivos em `src/environments/`:
+```typescript
+// environment.ts (desenvolvimento)
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api'
+};
+
+// environment.prod.ts (produção)
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.caronacerta.com.br'
+};
+```
+
+### Deploy
+
+O build gera arquivos estáticos que podem ser hospedados em:
+- Vercel
+- Netlify
+- Firebase Hosting
+- AWS S3 + CloudFront
+- Servidor web tradicional (Apache, Nginx)
+
 ---
 
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Para contribuir:
+## 👥 Contribuindo
 
 1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -m 'feat: adicionar nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
 5. Abra um Pull Request
 
----
+### Padrão de Commits
 
-## 📝 Roadmap
+Seguimos o [Conventional Commits](https://www.conventionalcommits.org/):
 
-### Versão 1.0 (MVP)
-- [x] Sistema de autenticação completo
-- [x] Cadastro complementar progressivo
-- [x] Sistema de "Lembrar-me"
-- [ ] Listagem de caronas
-- [ ] Oferecer/solicitar carona
-- [ ] Integração com backend Java/Spring Boot
-
-### Versão 2.0
-- [ ] Sistema de pagamento (Pix)
-- [ ] Avaliações e feedback
-- [ ] Chat entre motorista e passageiro
-- [ ] Notificações push
-- [ ] Integração Google Maps
-- [ ] App mobile (Ionic/Capacitor)
-
-### Versão 3.0
-- [ ] Sistema de projetos do condomínio
-- [ ] Votação de melhorias
-- [ ] Dashboard financeiro
-- [ ] Relatórios e estatísticas
+- `feat:` Nova funcionalidade
+- `fix:` Correção de bug
+- `docs:` Documentação
+- `style:` Formatação de código
+- `refactor:` Refatoração
+- `test:` Testes
+- `chore:` Tarefas gerais
 
 ---
 
-## 📄 Licença
+## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 👥 Autores
-
-- **Fred de Carvalho Silva** - *Desenvolvedor Principal* - [GitHub](https://github.com/fredcsilva)
+Este projeto está sob a licença [MIT](LICENSE).
 
 ---
 
 ## 📞 Contato
 
-- **Email**: fredcsilva@gmail.com
-- **LinkedIn**: [Fred Carvalho](https://linkedin.com/in/fredcsilva)
+Para dúvidas ou sugestões, entre em contato:
+
+- Email: contato@caronacerta.com.br
+- Website: https://caronacerta.com.br
 
 ---
 
-## 🙏 Agradecimentos
-
-- [Angular](https://angular.io/)
-- [PrimeNG](https://primeng.org/)
-- [Firebase](https://firebase.google.com/)
-- [CryptoJS](https://cryptojs.gitbook.io/)
-- Comunidade open source
+**Desenvolvido com ❤️ pela equipe Carona Certa**
+```
 
 ---
 
-<p align="center">Feito com ❤️ para facilitar a mobilidade em condomínios</p>
+## 🎯 Observações Finais
+
+Sua estrutura está **perfeita**! Apenas alguns pequenos ajustes que podem ser feitos posteriormente:
+
+### ✅ O que está ótimo:
+- Separação clara entre público e privado
+- Core, shared e features bem organizados
+- Guards isolados
+- Rotas modulares com lazy loading
+
+### 📝 Melhorias futuras (opcional):
+1. **Padronizar nomes de arquivo do botao-wizard**:
+```
+   botao-wizard.ts → botao-wizard.component.ts
+   botao-wizard.html → botao-wizard.component.html
+   botao-wizard.css → botao-wizard.component.css
+```
+
+2. **Padronizar card-carona e menu-bar** (mesma coisa):
+```
+   card-carona.ts → card-carona.component.ts
+   etc.
