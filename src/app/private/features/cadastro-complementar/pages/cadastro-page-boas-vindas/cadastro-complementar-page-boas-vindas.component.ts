@@ -90,8 +90,8 @@ export class CadastroComplementarPageBoasVindasComponent implements OnInit {
       }
 
       // ✅ Redireciona para próxima tela
-      console.log('➡️ Redirecionando para /cadastro-complementar-dados-pessoais');
-      this.router.navigate(['/cadastro-complementar-dados-pessoais']);
+      console.log('➡️ Redirecionando para /app/cadastro-complementar/dados-pessoais');
+      this.router.navigate(['/app/cadastro-complementar/dados-pessoais']);
 
     } catch (error: any) {
       console.error('❌ Erro ao iniciar cadastro:', error);

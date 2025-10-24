@@ -214,10 +214,10 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
         life: 2000
       });
 
-      setTimeout(() => {
-        console.log('➡️ Redirecionando para /cadastro-complementar-condominio');
-        this.router.navigate(['/cadastro-complementar-condominio']);
-      }, 1500);
+    setTimeout(() => {
+      console.log('➡️ Redirecionando para /app/cadastro-complementar/condominio');
+      this.router.navigate(['/app/cadastro-complementar/condominio']); // ✅ CORRETO
+    }, 1500);
 
     } catch (error: any) {
       console.error('❌ Erro ao salvar dados pessoais:', error);

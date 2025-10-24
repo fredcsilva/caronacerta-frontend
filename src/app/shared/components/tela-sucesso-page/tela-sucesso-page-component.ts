@@ -32,7 +32,7 @@ export class TelaSucessoPageComponent implements OnInit {
     buttonText: 'Faça Login, agora!',
     buttonRoute: '/login',
     showBackButton: true,
-    backRoute: '/novo-usuario'
+    backRoute: '/cadastro'
   };
 
   ngOnInit() {

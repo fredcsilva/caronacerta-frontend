@@ -14,12 +14,12 @@ export const POSICAO_MAXIMA = 6;
  * Mapeamento das posições do cadastro complementar para rotas
  */
 export const POSICOES_CADASTRO_COMPLEMENTAR: Record<number, string> = {
-  1: '/cadastro-complementar-boas-vindas',
-  2: '/cadastro-complementar-dados-pessoais',
-  3: '/cadastro-complementar-condominio',
-  4: '/cadastro-complementar-termos',
-  5: '/cadastro-complementar-sucesso',
-  6: '/listar-caronas' // Cadastro completo
+  1: '/app/cadastro-complementar/boas-vindas',
+  2: '/app/cadastro-complementar/dados-pessoais',
+  3: '/app/cadastro-complementar/condominio',  // ✅ Adicionar /app/
+  4: '/app/cadastro-complementar/termos',      // ✅ Adicionar /app/
+  5: '/app/cadastro-complementar/sucesso',     // ✅ Adicionar /app/
+  6: '/app/caronas/listar' // Cadastro completo
 };
 
 @Injectable({

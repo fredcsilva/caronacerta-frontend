@@ -2,11 +2,6 @@ import { Routes } from '@angular/router';
 
 export const CADASTRO_COMPLEMENTAR_ROUTES: Routes = [
   {
-    path: '',
-    redirectTo: 'boas-vindas',
-    pathMatch: 'full'
-  },
-  {
     path: 'boas-vindas',
     loadComponent: () => 
       import('./pages/cadastro-page-boas-vindas/cadastro-complementar-page-boas-vindas.component')

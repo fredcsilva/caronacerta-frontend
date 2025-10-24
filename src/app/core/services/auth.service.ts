@@ -21,7 +21,7 @@ export interface LoginResponse {
   role: string;
   emailVerified: boolean;
   pendenciaCadastro: boolean;
-  posicaoCadastroComplementar?: number; // ✅ NOVO CAMPO
+  posicaoCadastroComplementar?: number;
   message: string;
 }
 
@@ -57,23 +57,28 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private userService: UserService
+    // ❌ REMOVER: private auth: Auth 
   ) {}
 
   /**
-   * Realiza o login do usuário, salva o token JWT
+   * Realiza o login do usuário, salva o token
    * e carrega os dados completos do usuário autenticado.
    */
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap((response) => {
-        // ✅ Salva token
-        localStorage.setItem('token', response.token);
-
-        // ❌ REMOVIDO: Não carrega dados do backend aqui
-        // O login.ts já faz isso manualmente com os dados da resposta
-        // this.userService.loadUserData();
-      })
-    );
+  login(credentials: LoginRequest): Observable<LoginResponse> {
+    // Limpa autenticação antiga
+    this.clearAuth();
+    
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
+      .pipe(
+        tap(response => {
+          // Salva o token do backend
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userEmail', response.email);
+          localStorage.setItem('userId', response.uid);
+          
+          this.userService.loadUserData();
+        })
+      );
   }
 
   /**
@@ -127,7 +132,8 @@ export class AuthService {
   /**
    * Verifica se o token é válido
    */
-  verifyToken(token: string): Observable<LoginResponse> {
+  /*
+  verifyToken(token: string): Observable<LoginResponse> {    
     return this.http.get<LoginResponse>(`${this.apiUrl}/verify`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
@@ -135,7 +141,8 @@ export class AuthService {
       })
     });
   }
-
+  */
+ 
   /**
    * Realiza logout
    */

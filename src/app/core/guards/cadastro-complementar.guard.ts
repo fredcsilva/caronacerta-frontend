@@ -1,73 +1,55 @@
-import { inject } from '@angular/core';
-import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
-import { UserService } from './../services/user.service';
-import { CadastroComplementarService } from '../../private/features/cadastro-complementar/services/cadastro-complementar.service';
+// src/app/core/guards/cadastro-complementar.guard.ts
 
-/**
- * Guard que protege as rotas do cadastro complementar
- * Garante que o usuário só pode acessar a tela correspondente à sua posição atual
- */
-export const cadastroComplementarGuard: CanActivateFn = async (route: ActivatedRouteSnapshot) => {
+import { inject } from '@angular/core';
+import { Router, CanActivateFn } from '@angular/router';
+import { UserService } from './../services/user.service';
+
+export const cadastroComplementarGuard: CanActivateFn = async () => {
   const router = inject(Router);
   const userService = inject(UserService);
-  const cadastroService = inject(CadastroComplementarService);
 
-  // 1️⃣ Verifica se está autenticado
+  console.log('🛡️ GUARD: Validando acesso ao cadastro complementar');
+
+  // 1️⃣ Verifica autenticação
   const token = userService.getToken();
   if (!token) {
-    console.warn('⚠️ Usuário não autenticado. Redirecionando para login...');
+    console.warn('⚠️ GUARD: Não autenticado');
     router.navigate(['/login']);
     return false;
   }
 
-  // 2️⃣ Obtém usuário atual (prioriza cache do login)
+  // 2️⃣ Obtém usuário
   let user = userService.getCurrentUser();
   
-  // Se não tiver no cache, busca do backend
   if (!user) {
     const userId = userService.getUserId();
     if (!userId) {
-      console.warn('⚠️ UserId não encontrado');
+      console.warn('⚠️ GUARD: UserId não encontrado');
       router.navigate(['/login']);
       return false;
     }
     
     try {
-      console.log('🔍 Buscando usuário do backend...');
+      console.log('🔍 GUARD: Buscando usuário do backend...');
       user = await userService.fetchUserData(userId, token);
-      console.log('📦 Usuário obtido do backend:', user);
     } catch (error) {
-      console.error('❌ Erro ao buscar dados do usuário:', error);
+      console.error('❌ GUARD: Erro ao buscar usuário:', error);
       router.navigate(['/login']);
       return false;
     }
-  } else {
-    console.log('✅ Usuário obtido do cache:', user);
   }
 
-  // 3️⃣ Verifica se o cadastro está completo (posição 6)
   const posicaoAtual = user.posicaoCadastroComplementar || 1;
-  
+  console.log('📍 GUARD: Posição do usuário:', posicaoAtual);
+
+  // 3️⃣ Se cadastro completo (posição >= 6), NÃO pode acessar wizard
   if (posicaoAtual >= 6) {
-    console.log('✅ Cadastro completo (posição 6 ou maior). Redirecionando para listar caronas...');
-    router.navigate(['/listar-caronas']);
+    console.log('❌ GUARD: Cadastro completo - acesso negado ao wizard');
+    router.navigate(['/app/caronas/listar']);
     return false;
   }
 
-  // 4️⃣ Obtém a rota esperada para a posição atual
-  const rotaAtual = '/' + route.routeConfig?.path;
-  const rotaEsperada = cadastroService.obterRotaPorPosicao(posicaoAtual);
-
-  console.log(`🔍 Posição atual: ${posicaoAtual} | Rota esperada: ${rotaEsperada} | Rota acessada: ${rotaAtual}`);
-
-  // 5️⃣ Se a rota não corresponde à posição, redireciona
-  if (rotaAtual !== rotaEsperada) {
-    console.warn(`⚠️ Acesso negado! Redirecionando para: ${rotaEsperada}`);
-    router.navigate([rotaEsperada]);
-    return false;
-  }
-
-  // 6️⃣ Rota válida, permite acesso
-  console.log('✅ Acesso permitido à tela:', rotaAtual);
+  // 4️⃣ Se cadastro incompleto, PODE acessar wizard
+  console.log('✅ GUARD: Cadastro incompleto - acesso permitido');
   return true;
 };

@@ -1,13 +1,23 @@
+<!-- src/app/private/features/caronas/pages/carona-page-listar/carona-page-listar.component.html -->
+
 <div class="listar-caronas-container">
   <div class="content">
     <h1>Minhas Caronas</h1>
     <p>Aqui você verá a lista de caronas disponíveis...</p>
 
+            <!-- ✅ Botão Logout -->
+    <button class="logout-button-content" (click)="logout()" title="Sair">
+      <i class="pi pi-sign-out"></i>
+    </button>
+
     <div class="lista-cards">
-        <app-card-carona *ngFor="let carona of caronas" [carona]="carona"></app-card-carona>
-    <br/>
-    <br/>
-    <p></p>
+      <app-card-carona 
+        *ngFor="let carona of caronas" 
+        [carona]="carona">
+      </app-card-carona>
+      <br/>
+      <br/>
+      <p></p>
     </div>
   </div>
 </div>

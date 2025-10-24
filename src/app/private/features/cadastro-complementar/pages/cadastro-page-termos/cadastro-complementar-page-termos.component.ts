@@ -164,10 +164,10 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
         life: 2000
       });
 
-      setTimeout(() => {
-        console.log('➡️ Redirecionando para /cadastro-complementar-sucesso');
-        this.router.navigate(['/cadastro-complementar-sucesso']);
-      }, 1500);
+    setTimeout(() => {
+      console.log('➡️ Redirecionando para /app/cadastro-complementar/sucesso');
+      this.router.navigate(['/app/cadastro-complementar/sucesso']); // ✅ Adicionar /app/
+    }, 1500);
 
     } catch (error) {
       console.error('❌ Erro ao aceitar termos:', error);

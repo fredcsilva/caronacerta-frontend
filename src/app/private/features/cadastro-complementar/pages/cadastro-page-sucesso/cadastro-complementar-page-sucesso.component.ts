@@ -54,12 +54,12 @@
       console.log(`✅ Cadastro finalizado com sucesso! Posição: ${POSICAO_MAXIMA}`);
 
       // Redirecionar para lista de caronas
-      this.router.navigate(['/listar-caronas']);
+      this.router.navigate(['/app/caronas/listar']);
       
     } catch (error) {
       console.error('❌ Erro ao finalizar cadastro:', error);
       // Mesmo com erro, redireciona (pode ajustar conforme necessário)
-      this.router.navigate(['/listar-caronas']);
+      this.router.navigate(['/app/caronas/listar']);
     } finally {
       this.loading = false;
     }

@@ -14,8 +14,7 @@ export const routes: Routes = [
     path: 'app',
     loadChildren: () => 
       import('./private/private.routes')       // ← Importa daqui
-        .then(m => m.PRIVATE_ROUTES),
-    canActivate: [cadastroComplementarGuard]
+        .then(m => m.PRIVATE_ROUTES)
   },
   {
     path: '**',

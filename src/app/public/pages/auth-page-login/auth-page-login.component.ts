@@ -9,8 +9,7 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { HapticService } from '../../../core/services/haptic.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { CadastroComplementarService } from '../../../private/features/cadastro-complementar/services/cadastro-complementar.service';
+import { AuthService, LoginRequest } from '../../../core/services/auth.service';
 import { UserService } from '../../../core/services/user.service';
 import { EncryptionService } from '../../../core/services/encryption.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -35,33 +34,23 @@ export class AuthPageLoginComponent implements OnInit {
   private router = inject(Router);
   private haptic = inject(HapticService);
   private authService = inject(AuthService);
-  private cadastroComplementarService = inject(CadastroComplementarService);
   private userService = inject(UserService);
   private encryptionService = inject(EncryptionService);
   
-  // Propriedades do formulário
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
   
-  // Controle de mensagens
   showMessage: boolean = false;
   messageText: string = '';
   messageSeverity: 'success' | 'error' | 'info' | 'warn' = 'error';
   
-  // Controle de loading
   isLoading: boolean = false;
 
-  /**
-   * ✅ Carrega credenciais salvas (descriptografadas)
-   */
   ngOnInit() {
     this.loadSavedCredentials();
   }
 
-  /**
-   * ✅ Carrega email e senha salvos (descriptografa a senha)
-   */
   private loadSavedCredentials() {
     const savedEmail = localStorage.getItem('rememberedEmail');
     const encryptedPassword = localStorage.getItem('rememberedPassword');
@@ -81,17 +70,11 @@ export class AuthPageLoginComponent implements OnInit {
         console.warn('⚠️ Falha ao descriptografar senha. Removendo credenciais...');
         this.clearSavedCredentials();
       }
-    } else {
-      console.log('ℹ️ Nenhuma credencial salva encontrada.');
     }
   }
 
-  /**
-   * ✅ Salva ou remove credenciais (criptografa a senha)
-   */
   private handleRememberMe() {
     if (this.rememberMe) {
-      // Criptografa a senha
       const encryptedPassword = this.encryptionService.encrypt(this.password);
       
       if (encryptedPassword) {
@@ -99,36 +82,23 @@ export class AuthPageLoginComponent implements OnInit {
         localStorage.setItem('rememberedPassword', encryptedPassword);
         localStorage.setItem('rememberMe', 'true');
         console.log('💾 Credenciais salvas (senha criptografada)');
-      } else {
-        console.error('❌ Erro ao criptografar senha');
       }
     } else {
-      // Remove credenciais salvas
       this.clearSavedCredentials();
-      console.log('🗑️ Credenciais removidas');
     }
   }
 
-  /**
-   * ✅ Remove todas as credenciais salvas
-   */
   private clearSavedCredentials() {
     localStorage.removeItem('rememberedEmail');
     localStorage.removeItem('rememberedPassword');
     localStorage.removeItem('rememberMe');
   }
 
-  /**
-   * Limpa a mensagem quando o usuário interage com os campos
-   */
   onFieldFocus() {
     this.showMessage = false;
     this.messageText = '';
   }
 
-  /**
-   * Exibe mensagem de erro
-   */
   private showError(message: string) {
     this.showMessage = true;
     this.messageText = message;
@@ -136,9 +106,6 @@ export class AuthPageLoginComponent implements OnInit {
     this.haptic.lightTap();
   }
 
-  /**
-   * Exibe mensagem de sucesso
-   */
   private showSuccess(message: string) {
     this.showMessage = true;
     this.messageText = message;
@@ -146,9 +113,6 @@ export class AuthPageLoginComponent implements OnInit {
     this.haptic.lightTap();
   }
 
-  /**
-   * Valida os campos do formulário
-   */
   private validateForm(): boolean {
     if (!this.email || this.email.trim() === '') {
       this.showError('Por favor, informe seu email.');
@@ -169,46 +133,44 @@ export class AuthPageLoginComponent implements OnInit {
     return true;
   }
 
+  //efetuando login
   onLogin() {
     this.haptic.lightTap();
+
+    const credentials: LoginRequest = {
+      email: this.email,
+      password: this.password
+    };
     
-    // Limpa mensagens anteriores
     this.showMessage = false;
     
-    // Valida o formulário
     if (!this.validateForm()) {
       return;
     }
 
-    // Inicia loading
     this.isLoading = true;
 
-    // 🔹 Chama o serviço de autenticação
-    this.authService.login(this.email, this.password).subscribe({
+    this.authService.login(credentials).subscribe({
       next: (response) => {
-        console.log('🚀 INÍCIO DO PROCESSAMENTO DE LOGIN');
-        console.log('✅ Resposta completa do backend:', JSON.stringify(response, null, 2));
+        console.log('🚀 Login realizado com sucesso');
         
-        // 🔒 Verifica se o e-mail foi confirmado
+        // Verifica e-mail confirmado
         if (response.emailVerified === false) {
           this.isLoading = false;
-          this.showError('E-mail não verificado. Verifique sua caixa de entrada e clique no link de confirmação.');
+          this.showError('E-mail não verificado. Verifique sua caixa de entrada.');
           return;
         }
         
-        // ✅ Login bem-sucedido: processa "Lembrar-me" (criptografado)
+        // Salva credenciais
         this.handleRememberMe();
         
-        // 💾 Salva o token e dados do usuário
+        // Salva dados no storage
         const storage = this.rememberMe ? localStorage : sessionStorage;
-        
         storage.setItem('token', response.token);
         storage.setItem('userEmail', response.email);
         storage.setItem('userId', response.uid);
 
-        console.log('💾 Dados salvos no storage');
-
-        // ✅ Salva os dados do usuário no currentUser
+        // Salva usuário no cache
         this.userService.setCurrentUser({
           uid: response.uid,
           email: response.email,
@@ -216,74 +178,67 @@ export class AuthPageLoginComponent implements OnInit {
           role: response.role,
           active: true,
           pendenciaCadastro: response.pendenciaCadastro,
-          posicaoCadastroComplementar: response.posicaoCadastroComplementar
+          posicaoCadastroComplementar: response.posicaoCadastroComplementar || 1
         });
 
-        console.log('👤 Usuário salvo no cache com posição:', response.posicaoCadastroComplementar);
-
-        // ✅ Exibe mensagem de sucesso
+        console.log('💾 Dados salvos. Posição:', response.posicaoCadastroComplementar);
         this.showSuccess('Login realizado com sucesso!');
-        
-        console.log('⏰ Iniciando setTimeout...');
-        
-        // ⏳ Aguarda um momento para o usuário ver a mensagem
+
+        // ✅ AQUI QUEM REDIRECIONA É O COMPONENTE
         setTimeout(() => {
-          console.log('🔄 Dentro do setTimeout');
-          
-          // 🚦 Redireciona conforme o status do cadastro
-          console.log('📋 Verificando pendenciaCadastro:', response.pendenciaCadastro);
-          console.log('📋 Tipo de pendenciaCadastro:', typeof response.pendenciaCadastro);
-          console.log('📍 Posição do cadastro:', response.posicaoCadastroComplementar);
+          this.isLoading = false;
           
           if (response.pendenciaCadastro === true) {
-            console.log('✅ ENTROU NO IF - Cadastro incompleto!');
-            
             const posicao = response.posicaoCadastroComplementar || 1;
-            console.log(`🎯 Redirecionando para posição ${posicao}`);
+            console.log(`✅ Redirecionando para posição ${posicao}`);
             
-            this.cadastroComplementarService.redirecionarParaPosicao(posicao);
-            
+            // Redireciona para a rota correspondente
+            const rota = this.getRotaPorPosicao(posicao);
+            this.router.navigateByUrl(rota);
           } else {
-            console.log('❌ ENTROU NO ELSE - Cadastro completo!');
-            console.log('⚠️ Redirecionando para /listar-caronas');
-            this.router.navigate(['/listar-caronas']);
+            console.log('✅ Cadastro completo. Redirecionando para caronas');
+            this.router.navigateByUrl('/app/caronas/listar');
           }
-          
-          this.isLoading = false;
-          console.log('🏁 FIM DO PROCESSAMENTO');
         }, 1000);
       },
       error: (error: HttpErrorResponse) => {
         console.error('❌ Erro no login:', error);
         this.isLoading = false;
         
-        // ⚠️ Trata diferentes tipos de erro
         if (error.status === 401 || error.status === 400) {
-          this.showError('Não foi possível efetuar login. Login ou Senha incorretos.');
+          this.showError('Login ou Senha incorretos.');
         } else if (error.status === 0) {
-          this.showError('Erro de conexão. Verifique sua internet e tente novamente.');
+          this.showError('Erro de conexão. Verifique sua internet.');
         } else if (error.status === 500) {
           this.showError('Erro no servidor. Tente novamente mais tarde.');
         } else {
-          this.showError('Não foi possível efetuar login. Login ou Senha incorretos.');
+          this.showError('Não foi possível efetuar login.');
         }
       }
     });
   }
 
   /**
-   * Navega para a tela de recuperação de senha
+   * ✅ Retorna a rota baseada na posição
    */
+  private getRotaPorPosicao(posicao: number): string {
+    const rotas: Record<number, string> = {
+      1: '/app/cadastro-complementar/boas-vindas',
+      2: '/app/cadastro-complementar/dados-pessoais',
+      3: '/app/cadastro-complementar/condominio',
+      4: '/app/cadastro-complementar/termos',
+      5: '/app/cadastro-complementar/sucesso'
+    };
+    return rotas[posicao] || rotas[1];
+  }
+
   goToForgotPassword() {
     this.haptic.lightTap();
     this.router.navigate(['/esqueci-senha']);
   }
 
-  /**
-   * Navega para a tela de novo usuário (cadastro)
-   */
   goToNewUser() {
     this.haptic.lightTap();
-    this.router.navigate(['/novo-usuario']);
+    this.router.navigate(['/cadastro']);
   }
 }

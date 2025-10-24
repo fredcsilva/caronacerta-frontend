@@ -21,7 +21,7 @@ export class MenuBarComponent {
   @Input() title: string = 'Carona Certa';
   @Input() showBackButton: boolean = false;
   @Input() showLogoutButton: boolean = false;
-  @Input() backRoute: string = '/boas-vindas';
+  @Input() backRoute: string = '/';
 
   /**
    * Navega para a rota de volta configurada

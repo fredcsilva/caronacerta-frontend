@@ -1,5 +1,7 @@
+/* src/app/private/features/caronas/pages/carona-page-listar/carona-page-listar.component.css */
+
 .page-container {
-  padding-bottom: 80px; /* espaço para a nav (60px + margem) */
+  padding-bottom: 80px;
   min-height: 80vh;
 }
 
@@ -8,25 +10,13 @@
   justify-content: flex-start;
   align-items: stretch;
   min-height: 100vh;
-
   background: linear-gradient(135deg, #F1F8E9 0%, #E8F5E9 100%);
   box-sizing: border-box;
-
-  /* Compensa o menu superior fixo */
   padding-top: calc(var(--menu-bar-height, 80px) + 8px);
-
-  /* 🔹 Compensa o bottom-nav fixo (baseado no seu layout real) */
-  padding-bottom: 110px; /* ⬅️ altura exata da barra inferior + sombra */
-
+  padding-bottom: 110px;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
-
-
-.listar-caronas-container {
-  padding-bottom: var(--bottom-nav-height);
-}
-
 
 .content {
   padding: 1.5rem;
@@ -35,7 +25,6 @@
   text-align: center;
 }
 
-/* Cabeçalhos e textos */
 .content h1 {
   font-family: 'Nunito', sans-serif;
   font-size: 1.75rem;
@@ -50,7 +39,6 @@
   color: rgba(66, 66, 66, 0.8);
 }
 
-/* Ajuste responsivo para telas menores */
 @media (max-width: 768px) {
   .listar-caronas-container {
     margin-top: 64px;
@@ -85,7 +73,7 @@ app-card-carona {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  max-height: calc(100vh - 200px); /* 🔹 ajusta conforme seu menu/topo */
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   padding-right: 0.5rem;
   margin-top: 0.2rem;

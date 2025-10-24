@@ -184,10 +184,10 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
         life: 2000
       });
 
-      setTimeout(() => {
-        console.log('➡️ Redirecionando para /cadastro-complementar-termos');
-        this.router.navigate(['/cadastro-complementar-termos']);
-      }, 1500);
+    setTimeout(() => {
+      console.log('➡️ Redirecionando para /app/cadastro-complementar/termos');
+      this.router.navigate(['/app/cadastro-complementar/termos']); // ✅ CORRETO
+    }, 1500);
 
     } catch (error: any) {
       console.error('❌ Erro ao salvar dados do condomínio:', error);

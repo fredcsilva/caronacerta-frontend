@@ -29,8 +29,8 @@ export class AppComponent {
    */
   hasCustomMenuBar(): boolean {
     const customRoutes = [
-      '/cadastro-complementar-boas-vindas',
-      '/cadastro-complementar-dados-pessoais',
+      '/app/cadastro-complementar/boas-vindas',
+      '/app/cadastro-complementar/dados-pessoais',
       '/cadastro-complementar-condominio',
       '/cadastro-complementar-termos',
       '/cadastro-complementar-sucesso'

@@ -88,7 +88,7 @@ export class AuthPageNovoUsuarioComponent {
             buttonText: 'Faça seu Login, agora!',
             buttonRoute: '/login',
             showBackButton: true,
-            backRoute: '/novo-usuario'
+            backRoute: '/cadastro'
           }
         });
         
