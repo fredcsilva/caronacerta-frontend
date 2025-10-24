@@ -7,8 +7,8 @@ import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { AuthService } from '../../../services/auth.services';
-import { HapticService } from '../../../services/haptic.service';
+import { HapticService } from '../../../core/services/haptic.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-esqueci-senha',

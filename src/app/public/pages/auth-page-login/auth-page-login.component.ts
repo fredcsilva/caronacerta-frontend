@@ -8,11 +8,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
-import { HapticService } from '../../../services/haptic.service';
-import { AuthService } from '../../../services/auth.services';
-import { CadastroComplementarService } from '../../../services/cadastro-complementar-service';
-import { UserService } from '../../../services/user.service';
-import { EncryptionService } from '../../../services/encryption.service';
+import { HapticService } from '../../../core/services/haptic.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { CadastroComplementarService } from '../../../private/features/cadastro-complementar/services/cadastro-complementar.service';
+import { UserService } from '../../../core/services/user.service';
+import { EncryptionService } from '../../../core/services/encryption.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

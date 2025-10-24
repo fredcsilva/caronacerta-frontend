@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
 import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
-import { UserService } from '../../../../../services/user.service';
+import { UserService } from '../../../../../core/services/user.service';
 
 @Component({
   selector: 'app-cadastro-complementar-boas-vindas',

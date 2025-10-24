@@ -7,9 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner'; // ✅ Import adicionado
-
-import { HapticService } from '../../../services/haptic.service';
-import { AuthService } from '../../../services/auth.services';
+import { HapticService } from '../../../core/services/haptic.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

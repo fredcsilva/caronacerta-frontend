@@ -8,8 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { AuthService, RegisterRequest } from '../../../services/auth.services';
-import { HapticService } from '../../../services/haptic.service';
+import { HapticService } from '../../../core/services/haptic.service';
+import { AuthService, RegisterRequest } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-novo-usuario',

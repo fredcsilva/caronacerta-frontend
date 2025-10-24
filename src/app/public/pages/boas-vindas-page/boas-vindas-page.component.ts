@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { HapticService } from '../../../services/haptic.service';
+import { HapticService } from '../../../core/services/haptic.service';
 
 @Component({
   selector: 'app-boas-vindas',
   standalone: true,
   imports: [CarouselModule, ButtonModule, RippleModule],
-  templateUrl: './boas-vindas.html',
-  styleUrl: './boas-vindas.css'
+  templateUrl: './boas-vindas-page.component.html',
+  styleUrl: './boas-vindas-page.component.css'
 })
-export class BoasVindasComponent {
+export class BoasVindasPageComponent {
   private router = inject(Router);
   private haptic = inject(HapticService);
   currentPage: number = 0;

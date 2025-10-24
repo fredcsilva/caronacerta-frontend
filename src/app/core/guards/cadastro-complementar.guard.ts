@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { CadastroComplementarService } from '../../services/cadastro-complementar-service';
+import { UserService } from './../services/user.service';
+import { CadastroComplementarService } from '../../private/features/cadastro-complementar/services/cadastro-complementar.service';
 
 /**
  * Guard que protege as rotas do cadastro complementar

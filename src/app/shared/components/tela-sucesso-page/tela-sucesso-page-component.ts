@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { HapticService } from '../../services/haptic.service';
+import { HapticService } from '../../../core/services/haptic.service';
 
 export interface SuccessConfig {
   title: string;
@@ -18,10 +18,10 @@ export interface SuccessConfig {
   selector: 'app-tela-sucesso',
   standalone: true,
   imports: [CommonModule, ButtonModule, RippleModule],
-  templateUrl: './tela-sucesso.html',
-  styleUrl: './tela-sucesso.css'
+  templateUrl: './tela-sucesso-page-component.html',
+  styleUrl: './tela-sucesso-page-component.css'
 })
-export class TelaSucessoComponent implements OnInit {
+export class TelaSucessoPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private haptic = inject(HapticService);

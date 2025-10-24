@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MenuBarComponent } from './components/menu-bar/menu-bar';
+import { MenuBarComponent } from './shared/components/menu-bar/menu-bar.component';
 import { filter } from 'rxjs/operators';
 
 @Component({

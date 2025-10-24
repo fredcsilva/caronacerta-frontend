@@ -11,8 +11,8 @@ import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
-import { HapticService } from '../../../../../services/haptic.service';
-import { UserService } from '../../../../../services/user.service';
+import { HapticService } from '../../../../../core/services/haptic.service';
+import { UserService } from '../../../../../core/services/user.service';
 
 @Component({
   selector: 'app-cadastro-complementar-dados-pessoais',

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { HapticService } from '../../../services/haptic.service';
+import { HapticService } from '../../../core/services/haptic.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
