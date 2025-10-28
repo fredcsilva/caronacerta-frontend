@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { UserService } from '../../../../../core/services/user.service';
 
-@Component({
+@Component({  
   selector: 'app-cadastro-complementar-boas-vindas',
   standalone: true,
   imports: [

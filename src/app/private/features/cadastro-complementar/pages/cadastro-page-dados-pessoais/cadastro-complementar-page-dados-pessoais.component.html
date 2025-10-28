@@ -1,22 +1,78 @@
+<!-- ✅ Menu-bar com título e subtítulo -->
+<app-menu-bar
+  [title]="'Dados Pessoais'"
+  [subtitle]="'Passo 1 de 3'"
+  [showBackButton]="false"
+  [showLogoutButton]="true">
+</app-menu-bar>
+
 <div class="dados-pessoais-container">
-  <p-toast></p-toast>
+  <p-toast key="tc" position="top-center"></p-toast>
 
   <div class="content-wrapper">
     <p-card>
-      <!-- Header -->
-      <div class="card-header">
-        <h1>Dados Pessoais</h1>
-        <p>Passo 1 de 3</p>
-      </div>
-
+      <!-- Conteúdo do formulário -->
       <div class="card-content">
-
-        <!-- ✅ Botão Logout -->
-        <button class="logout-button-content" (click)="logout()" title="Sair">
-          <i class="pi pi-sign-out"></i>
-        </button>
-
         <form [formGroup]="dadosPessoaisForm" (ngSubmit)="salvarDadosPessoais()">
+
+          <!-- ✅ NOVO: Avatar/Foto de Perfil -->
+          <div class="field avatar-field">
+            <label>Foto de Perfil</label>
+            <div class="avatar-container">
+              
+              <!-- Avatar Display -->
+              <div class="avatar-display" (click)="openImageModal()" [class.clickable]="avatarImageSrc">
+                <p-avatar
+                  *ngIf="avatarThumbnailSrc"
+                  [image]="avatarThumbnailSrc"
+                  shape="circle"
+                  size="xlarge"
+                  [style]="{ width: '120px', height: '120px', cursor: 'pointer' }"
+                ></p-avatar>
+                
+                <p-avatar
+                  *ngIf="!avatarThumbnailSrc"
+                  icon="pi pi-user"
+                  shape="circle"
+                  size="xlarge"
+                  [style]="{ 
+                    width: '120px', 
+                    height: '120px', 
+                    backgroundColor: '#7E57C2',
+                    color: '#FFFFFF'
+                  }"
+                ></p-avatar>
+              </div>
+
+              <!-- Upload Controls -->
+              <div class="avatar-controls">
+                <p-fileUpload
+                  #fileUpload
+                  mode="basic"
+                  accept="image/png,image/jpeg,image/jpg"
+                  [auto]="false"
+                  [maxFileSize]="5242880"
+                  (onSelect)="onFileSelect($event)"
+                  chooseLabel="Selecionar Foto"
+                  chooseIcon="pi pi-camera"
+                  [style]="{ width: '100%' }"
+                ></p-fileUpload>
+
+                <p-button
+                  *ngIf="avatarImageSrc"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  (onClick)="removeAvatar()"
+                  label="Remover"
+                ></p-button>
+              </div>
+
+              <small class="avatar-hint">
+                Formatos: PNG, JPEG ou JPG | Tamanho máximo: 5 MB
+              </small>
+            </div>
+          </div>
 
           <!-- Data de Nascimento -->
           <div class="field">
@@ -90,4 +146,23 @@
       </div>
     </p-card>
   </div>
+
+  <!-- ✅ Modal para visualizar imagem ampliada -->
+  <p-dialog
+    [(visible)]="displayImageModal"
+    [modal]="true"
+    [closable]="true"
+    [dismissableMask]="true"
+    [style]="{ width: '90vw', maxWidth: '600px' }"
+    header="Foto de Perfil"
+  >
+    <div class="image-modal-content">
+      <img 
+        *ngIf="avatarImageSrc" 
+        [src]="avatarImageSrc" 
+        alt="Foto de perfil ampliada"
+        class="full-image"
+      />
+    </div>
+  </p-dialog>
 </div>

@@ -1,11 +1,11 @@
 .login-container {
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #F1F8E9;
   padding: 2rem 1rem;
-  padding-top: 0px; /* ✅ ADICIONAR (72px menu + 16px extra) */
+  padding-top: 88px; /* Altura da barra de menu fixa + margem */
 }
 
 .login-content {
@@ -369,7 +369,7 @@
 
   .login-container {
     padding: 0rem;
-    padding-top: 0px; 
+    padding-top: 88px; 
   }
 }
 

@@ -9,15 +9,19 @@ import { ScrollPanel } from 'primeng/scrollpanel';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { RippleModule } from 'primeng/ripple';
+
+// ✅ IMPORTS CORRIGIDOS para a estrutura real
 import { environment } from '../../../../../../environments/environment';
 import { HapticService } from '../../../../../core/services/haptic.service';
 import { UserService } from '../../../../../core/services/user.service';
-import { RippleModule } from 'primeng/ripple'; 
+
+import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component';
 
 @Component({
   selector: 'app-cadastro-complementar-termos',
   standalone: true,
-  imports: [
+  imports: [  
     CommonModule,
     ReactiveFormsModule,
     Button,
@@ -25,17 +29,18 @@ import { RippleModule } from 'primeng/ripple';
     Checkbox,
     ScrollPanel,
     Toast,
-    RippleModule 
+    RippleModule,
+    MenuBarComponent
   ],
   providers: [MessageService],
   templateUrl: './cadastro-complementar-page-termos.component.html',
   styleUrls: ['./cadastro-complementar-page-termos.component.css']
 })
-export class CadastroComplementarPageTermosComponent implements OnInit {
+export class CadastroComplementarTermosComponent implements OnInit {
   
   termosForm!: FormGroup;
   loading = false;
-  carregandoDados = true; // ✅ NOVO: loading para carregamento inicial
+  carregandoDados = true;
   private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
   private haptic = inject(HapticService);
 
@@ -53,7 +58,7 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
   }
 
   /**
-   * ✅ NOVO: Carrega dados do usuário do backend
+   * Carrega dados do usuário do backend
    */
   private async carregarDadosUsuario(): Promise<void> {
     this.carregandoDados = true;
@@ -79,7 +84,7 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
           aceitaPrivacidade: user.aceitouPrivacidade || false
         });
 
-        // ✅ Força atualização do estado de validação
+        // Força atualização do estado de validação
         this.termosForm.markAllAsTouched();
         this.termosForm.updateValueAndValidity();
 
@@ -89,12 +94,7 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
 
     } catch (error) {
       console.error('❌ Erro ao carregar dados do usuário:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível carregar seus dados. Tente novamente.',
-        life: 5000
-      });
+      this.showError('Erro', 'Não foi possível carregar seus dados. Tente novamente.');
     } finally {
       this.carregandoDados = false;
     }
@@ -109,12 +109,7 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
 
   async aceitarTermos(): Promise<void> {
     if (this.termosForm.invalid) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Atenção',
-        detail: 'Você precisa aceitar ambos os termos para continuar.',
-        life: 4000
-      });
+      this.showWarning('Atenção', 'Você precisa aceitar ambos os termos para continuar.');
       return;
     }
 
@@ -126,9 +121,9 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
       const posicaoAtual = 4; // Esta tela é posição 4
       const novaPosicao = posicaoAtual + 1;
 
-      console.log('🔄 Aceitando termos...');
+      console.log('📄 Aceitando termos...');
 
-      // ✅ ÚNICO PONTO DE ATUALIZAÇÃO: Envia tudo junto pro backend
+      // Envia tudo junto pro backend
       await this.http.patch(
         `${this.apiUrl}/users/${userId}/posicao-cadastro`,
         { 
@@ -146,7 +141,7 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
 
       console.log(`✅ Backend atualizado - Posição: ${novaPosicao}`);
 
-      // ✅ Atualiza o cache local com a nova posição e dados
+      // Atualiza o cache local com a nova posição e dados
       const usuarioAtual = this.userService.getCurrentUser();
       if (usuarioAtual) {
         usuarioAtual.posicaoCadastroComplementar = novaPosicao;
@@ -157,54 +152,65 @@ export class CadastroComplementarPageTermosComponent implements OnInit {
         console.log(`🔒 Cache local atualizado - Posição: ${novaPosicao}`);
       }
 
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Sucesso',
-        detail: 'Termos aceitos com sucesso!',
-        life: 2000
-      });
+      this.showSuccess('Sucesso', 'Termos aceitos com sucesso!');
 
-    setTimeout(() => {
-      console.log('➡️ Redirecionando para /app/cadastro-complementar/sucesso');
-      this.router.navigate(['/app/cadastro-complementar/sucesso']); // ✅ Adicionar /app/
-    }, 1500);
+      setTimeout(() => {
+        console.log('➡️ Redirecionando para /app/cadastro-complementar/sucesso');
+        this.router.navigate(['/app/cadastro-complementar/sucesso']);
+      }, 1500);
 
     } catch (error) {
       console.error('❌ Erro ao aceitar termos:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível processar. Tente novamente.',
-        life: 5000
-      });
+      this.showError('Erro', 'Não foi possível processar. Tente novamente.');
     } finally {
       this.loading = false;
     }
   }
 
-  logout(): void {
-    this.haptic.lightTap();
-    
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userId');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userEmail');
-    sessionStorage.removeItem('userId');
+  /**
+   * ✅ Métodos para exibir mensagens toast centralizadas
+   */
+  private showSuccess(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: summary,
+      detail: detail,
+      life: 3000,
+      key: 'tc'
+    });
+  }
 
-    console.log('✅ Logout realizado');
-    
+  private showError(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: summary,
+      detail: detail,
+      life: 5000,
+      key: 'tc'
+    });
+  }
+
+  private showWarning(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'warn',
+      summary: summary,
+      detail: detail,
+      life: 4000,
+      key: 'tc'
+    });
+  }
+
+  private showInfo(summary: string, detail: string): void {
     this.messageService.add({
       severity: 'info',
-      summary: 'Logout',
-      detail: 'Você saiu do sistema.',
-      life: 2000
+      summary: summary,
+      detail: detail,
+      life: 3000,
+      key: 'tc'
     });
-
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 1000);
   }
+
+  // ❌ REMOVIDO: método logout() - deve estar no menu-bar component
 
   private getUserId(): string {
     return localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';

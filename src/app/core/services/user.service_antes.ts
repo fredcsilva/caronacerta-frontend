@@ -13,10 +13,6 @@ export interface User {
   pendenciaCadastro?: boolean;
   posicaoCadastroComplementar?: number;
 
-  // ✅ NOVO - Avatar
-  avatarUrl?: string;
-  avatarThumbnailUrl?: string;
-
   // Dados Pessoais
   dataNascimento?: string;
   telefone?: string;
@@ -150,8 +146,8 @@ export class UserService {
     });
   }
 
-  /**
-   * ✅ Atualiza dados genéricos do usuário e sincroniza localmente
+  /*** ✅ Atualiza dados genéricos do usuário e sincroniza localmente
+   * ⚠️ Preserva posicaoCadastroComplementar local (gerenciada separadamente)
    */
   updateUserData(data: Partial<User>): void {
     const token = this.getToken();
@@ -160,6 +156,9 @@ export class UserService {
       return;
     }
 
+    // 📌 Guarda a posição atual ANTES de atualizar
+    const posicaoAtual = this.currentUserSubject.value?.posicaoCadastroComplementar;
+
     this.http.put<User>(`${this.apiUrl}/users/me`, data, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
@@ -167,8 +166,14 @@ export class UserService {
       })
     }).subscribe({
       next: (updatedUser) => {
+        // ✅ Preserva a posição local se ela existir
+        if (posicaoAtual !== undefined && posicaoAtual !== null) {
+          updatedUser.posicaoCadastroComplementar = posicaoAtual;
+          console.log(`🔒 Posição preservada no cache: ${posicaoAtual}`);
+        }
+        
         this.currentUserSubject.next(updatedUser);
-        this.setCurrentUser(updatedUser); // Salva no storage também
+        this.setCurrentUser(updatedUser);
         console.log('✅ Usuário atualizado:', updatedUser);
       },
       error: (err) => {

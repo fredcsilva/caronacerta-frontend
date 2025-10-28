@@ -1,21 +1,30 @@
 .termos-container {
-  min-height: 100vh;
-  max-height: 100vh;
+  /* ✅ CORRIGIDO: Altura fixa para habilitar scroll */
+  height: 100vh;
   background-color: #F1F8E9;
   display: flex;
   flex-direction: column;
   padding: 0;
+  padding-top: 80px;
+  /* ✅ SCROLL HABILITADO */
   overflow-y: auto;
+  overflow-x: hidden;
+  /* ✅ Scroll suave em todos os navegadores */
+  scroll-behavior: smooth;
+  /* ✅ Touch scrolling para iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 .content-wrapper {
   flex: 1;
   padding: 2rem 1rem;
-  overflow-y: auto;
+  padding-bottom: 3rem;
+  /* ✅ CORRIGIDO: Removido overflow-y: visible que bloqueava o scroll */
   display: flex;
   justify-content: center;
   align-items: flex-start;
   max-width: 100%;
+  width: 100%;
 }
 
 ::ng-deep .p-card {
@@ -30,106 +39,11 @@
   padding: 0 !important;
 }
 
-.card-header {
-  background: linear-gradient(135deg, #7E57C2 0%, #9575CD 100%);
-  padding: 2rem;
-  border-radius: 12px 12px 0 0;
-  text-align: center;
-  color: #FFFFFF;
-  position: relative;
-}
-
-.progress-indicator {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.step {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  font-size: 1.1rem;
-  position: relative;
-}
-
-.step.completed {
-  background-color: #81C784;
-}
-
-.step.completed::after {
-  content: '✓';
-  position: absolute;
-  color: white;
-  font-size: 1.2rem;
-}
-
-.step.active {
-  background-color: #81C784;
-  box-shadow: 0 0 15px rgba(129, 199, 132, 0.6);
-}
-
-.card-header h1 {
-  margin: 0 0 0.5rem 0;
-  font-family: 'Nunito', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.card-header p {
-  margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 1rem;
-  opacity: 0.9;
-}
+/* ❌ REMOVIDO: Estilos do .card-header (menu-bar já é o header) */
 
 .card-content {
   padding: 2rem;
-  position: relative;
-}
-
-/* ✅ Botão Logout no canto superior direito do content */
-.logout-button-content {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #7E57C2 0%, #9575CD 100%);
-  border: 2px solid #E0E0E0;
-  color: #FFFFFF;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  transition: all 0.3s ease;
-  padding: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.logout-button-content:hover {
-  background: linear-gradient(135deg, #6A4FA3 0%, #7E57C2 100%);
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-.logout-button-content:active {
-  transform: scale(0.95);
-}
-
-.logout-button-content i {
-  color: #FFFFFF;
-  font-size: 1rem;
+  /* ❌ REMOVIDO: position: relative (não precisa mais para o botão de logout) */
 }
 
 form {
@@ -214,6 +128,7 @@ form {
   justify-content: center;
   gap: 1rem;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 ::ng-deep .button-group .p-button {
@@ -249,55 +164,28 @@ form {
 /* ✅ TABLETS E SMARTPHONES (< 768px) */
 @media (max-width: 768px) {
   .termos-container {
+    padding-top: 72px;
+    /* ✅ SCROLL GARANTIDO EM MOBILE */
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    /* ✅ Previne problema de scroll em iOS */
+    position: relative;
   }
 
   .content-wrapper {
     padding: 1rem 0.5rem;
-    overflow-y: auto;
+    padding-bottom: 2rem;
+    /* ✅ Garante que o conteúdo não seja cortado */
+    min-height: min-content;
   }
 
   ::ng-deep .p-card {
     margin-bottom: 1rem;
   }
 
-  .card-header {
-    padding: 1.5rem 1rem;
-  }
-
-  .card-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .card-header p {
-    font-size: 0.9rem;
-  }
-
-  .progress-indicator {
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .step {
-    width: 35px;
-    height: 35px;
-    font-size: 1rem;
-  }
-
   .card-content {
     padding: 1.5rem 1rem;
-  }
-
-  .logout-button-content {
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 2rem;
-    height: 2rem;
-  }
-  
-  .logout-button-content i {
-    font-size: 0.9rem;
   }
 
   form {
@@ -309,7 +197,7 @@ form {
   }
 
   ::ng-deep .custom-scrollpanel {
-    height: 150px !important;
+    height: 180px !important;
   }
 
   .termos-conteudo {
@@ -335,6 +223,7 @@ form {
   .button-group {
     flex-direction: column;
     margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
   }
 
   ::ng-deep .button-group .p-button {
@@ -343,35 +232,35 @@ form {
   }
 }
 
+/* ✅ PERSONALIZAÇÃO DA BARRA DE ROLAGEM (opcional - apenas desktop) */
+@media (min-width: 769px) {
+  .termos-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .termos-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+
+  .termos-container::-webkit-scrollbar-thumb {
+    background: rgba(126, 87, 194, 0.3);
+    border-radius: 10px;
+  }
+
+  .termos-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(126, 87, 194, 0.5);
+  }
+}
+
 /* ✅ SMARTPHONES MUITO PEQUENOS (< 375px) */
 @media (max-width: 375px) {
-  .card-header {
-    padding: 1rem 0.75rem;
-  }
-
-  .card-header h1 {
-    font-size: 1.3rem;
-  }
-
-  .step {
-    width: 32px;
-    height: 32px;
-    font-size: 0.9rem;
+  .termos-container {
+    padding-top: 68px; /* ✅ Para telas muito pequenas */
   }
 
   .card-content {
     padding: 1rem 0.75rem;
-  }
-
-  .logout-button-content {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 1.8rem;
-    height: 1.8rem;
-  }
-  
-  .logout-button-content i {
-    font-size: 0.85rem;
   }
 
   .termos-section h2 {
@@ -379,7 +268,7 @@ form {
   }
 
   ::ng-deep .custom-scrollpanel {
-    height: 130px !important;
+    height: 160px !important;
   }
 
   .termos-conteudo {
@@ -388,5 +277,140 @@ form {
 
   .checkbox-field label {
     font-size: 0.85rem;
+  }
+
+  .button-group {
+    margin-bottom: 1rem;
+  }
+}
+/* ============================================
+   TOAST CENTRALIZADO - ESTILOS
+   ============================================ */
+
+:host ::ng-deep .p-toast-top-center {
+  top: 100px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  max-width: 90% !important;
+}
+
+:host ::ng-deep .p-toast {
+  z-index: 9999 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+  min-width: 300px;
+  max-width: 500px;
+  margin: 0 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message-content {
+  padding: 1rem 1.25rem;
+  align-items: center;
+}
+
+:host ::ng-deep .p-toast .p-toast-message-icon {
+  font-size: 1.5rem;
+}
+
+:host ::ng-deep .p-toast .p-toast-message-text {
+  margin: 0 0.75rem;
+}
+
+:host ::ng-deep .p-toast .p-toast-summary {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+:host ::ng-deep .p-toast .p-toast-detail {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+:host ::ng-deep .p-toast .p-toast-icon-close {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+:host ::ng-deep .p-toast .p-toast-icon-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+:host ::ng-deep .p-toast-message-success {
+  background-color: #81C784;
+  border: none;
+  color: #FFFFFF;
+}
+
+:host ::ng-deep .p-toast-message-success .p-toast-message-icon,
+:host ::ng-deep .p-toast-message-success .p-toast-icon-close {
+  color: #FFFFFF;
+}
+
+:host ::ng-deep .p-toast-message-error {
+  background-color: #E57373;
+  border: none;
+  color: #FFFFFF;
+}
+
+:host ::ng-deep .p-toast-message-error .p-toast-message-icon,
+:host ::ng-deep .p-toast-message-error .p-toast-icon-close {
+  color: #FFFFFF;
+}
+
+:host ::ng-deep .p-toast-message-warn {
+  background-color: #FFB74D;
+  border: none;
+  color: #424242;
+}
+
+:host ::ng-deep .p-toast-message-warn .p-toast-message-icon,
+:host ::ng-deep .p-toast-message-warn .p-toast-icon-close {
+  color: #424242;
+}
+
+:host ::ng-deep .p-toast-message-info {
+  background-color: #7E57C2;
+  border: none;
+  color: #FFFFFF;
+}
+
+:host ::ng-deep .p-toast-message-info .p-toast-message-icon,
+:host ::ng-deep .p-toast-message-info .p-toast-icon-close {
+  color: #FFFFFF;
+}
+
+@media (max-width: 767px) {
+  :host ::ng-deep .p-toast-top-center {
+    top: 72px !important;
+    max-width: 95% !important;
+  }
+
+  :host ::ng-deep .p-toast .p-toast-message {
+    min-width: 280px;
+    max-width: 95vw;
+    margin: 0 0.5rem;
+  }
+
+  :host ::ng-deep .p-toast .p-toast-message-content {
+    padding: 0.875rem 1rem;
+  }
+
+  :host ::ng-deep .p-toast .p-toast-message-icon {
+    font-size: 1.25rem;
+  }
+
+  :host ::ng-deep .p-toast .p-toast-summary {
+    font-size: 0.9375rem;
+  }
+
+  :host ::ng-deep .p-toast .p-toast-detail {
+    font-size: 0.875rem;
   }
 }

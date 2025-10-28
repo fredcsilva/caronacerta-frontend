@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,10 +9,18 @@ import { Select } from 'primeng/select';
 import { InputMask } from 'primeng/inputmask';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
+import { FileUpload } from 'primeng/fileupload';
+import { Avatar } from 'primeng/avatar';
+import { Dialog } from 'primeng/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { HapticService } from '../../../../../core/services/haptic.service';
 import { UserService } from '../../../../../core/services/user.service';
+import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component';
+
+interface FileUploadEvent {
+  files: File[];
+}
 
 @Component({
   selector: 'app-cadastro-complementar-dados-pessoais',
@@ -25,7 +33,11 @@ import { UserService } from '../../../../../core/services/user.service';
     DatePicker,
     Select,
     InputMask,
-    Toast
+    Toast,
+    FileUpload,
+    Avatar,
+    Dialog,
+    MenuBarComponent
   ],
   providers: [MessageService],
   templateUrl: './cadastro-complementar-page-dados-pessoais.component.html',
@@ -33,9 +45,22 @@ import { UserService } from '../../../../../core/services/user.service';
 })
 export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
   
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
+  
   dadosPessoaisForm!: FormGroup;
   loading = false;
-  carregandoDados = true; // ✅ NOVO: loading para carregamento inicial
+  carregandoDados = true;
+  
+  // ✅ Avatar properties
+  avatarImageSrc: string | null = null;
+  avatarThumbnailSrc: string | null = null;
+  selectedFile: File | null = null;
+  displayImageModal = false;
+  
+  // Constantes para validação
+  readonly MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  readonly ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
+  
   private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
   private haptic = inject(HapticService);
   
@@ -64,7 +89,7 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
   }
 
   /**
-   * ✅ NOVO: Carrega dados do usuário do backend
+   * ✅ ATUALIZADO: Carrega dados do usuário incluindo avatar
    */
   private async carregarDadosUsuario(): Promise<void> {
     this.carregandoDados = true;
@@ -79,16 +104,14 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
         return;
       }
 
-      // Busca dados do usuário
+      // ✅ NOVO: Busca dados completos incluindo avatar
       const user = await this.userService.fetchUserData(userId, token);
       console.log('📦 Dados do usuário carregados:', user);
 
-      // Preenche o formulário
       if (user) {
         let dataNascimento: Date | null = null;
 
         if (user.dataNascimento) {
-          // Converte string para Date (formato YYYY-MM-DD)
           const partes = user.dataNascimento.split('-');
           if (partes.length === 3) {
             dataNascimento = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
@@ -101,33 +124,38 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
           genero: user.genero || ''
         });
 
-        // ✅ Força atualização do estado de validação
+        // ✅ ATUALIZADO: Carrega avatar e thumbnail se existirem
+        if (user.avatarUrl) {
+          this.avatarImageSrc = user.avatarUrl;
+          console.log('🖼️ Avatar carregado');
+        }
+
+        if (user.avatarThumbnailUrl) {
+          this.avatarThumbnailSrc = user.avatarThumbnailUrl;
+          console.log('🖼️ Thumbnail carregado');
+        } else if (user.avatarUrl) {
+          // Se não tem thumbnail, usa a imagem completa
+          this.avatarThumbnailSrc = user.avatarUrl;
+        }
+
         this.dadosPessoaisForm.markAllAsTouched();
         this.dadosPessoaisForm.updateValueAndValidity();
 
         console.log('✅ Formulário preenchido:', this.dadosPessoaisForm.value);
-        console.log('✅ Formulário válido:', this.dadosPessoaisForm.valid);
       }
 
     } catch (error) {
       console.error('❌ Erro ao carregar dados do usuário:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível carregar seus dados. Tente novamente.',
-        life: 5000
-      });
+      this.showError('Erro', 'Não foi possível carregar seus dados. Tente novamente.');
     } finally {
       this.carregandoDados = false;
     }
   }
 
   configurarDatas(): void {
-    // Idade mínima: 18 anos (data máxima permitida)
     this.maxDataNascimento = new Date();
     this.maxDataNascimento.setFullYear(this.maxDataNascimento.getFullYear() - 18);
     
-    // Idade máxima: 100 anos (data mínima permitida)
     this.minDataNascimento = new Date();
     this.minDataNascimento.setFullYear(this.minDataNascimento.getFullYear() - 100);
   }
@@ -146,15 +174,75 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
     return somenteNumeros.length === 11 ? null : { invalidTelefone: true };
   }
 
+  /**
+   * ✅ SIMPLIFICADO: Manipula seleção de arquivo
+   * Não gera mais thumbnail - backend faz isso
+   */
+  async onFileSelect(event: FileUploadEvent): Promise<void> {
+    if (event.files && event.files.length > 0) {
+      const file = event.files[0];
+      
+      // Validação de tipo
+      if (!this.ALLOWED_TYPES.includes(file.type)) {
+        this.showError('Tipo inválido', 'Por favor, selecione apenas imagens PNG, JPEG ou JPG.');
+        this.fileUpload.clear();
+        return;
+      }
+
+      // Validação de tamanho
+      if (file.size > this.MAX_FILE_SIZE) {
+        this.showError('Arquivo muito grande', 'O tamanho máximo permitido é 5 MB.');
+        this.fileUpload.clear();
+        return;
+      }
+
+      this.selectedFile = file;
+
+      // ✅ SIMPLIFICADO: Carrega apenas a imagem completa
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result && typeof e.target.result === 'string') {
+          this.avatarImageSrc = e.target.result;
+          // ✅ Usa a mesma imagem para thumbnail temporariamente
+          this.avatarThumbnailSrc = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+
+      this.showSuccess('Imagem selecionada', 'Foto de perfil carregada com sucesso!');
+    }
+  }
+
+  /**
+   * ✅ Remove avatar selecionado
+   */
+  removeAvatar(): void {
+    this.avatarImageSrc = null;
+    this.avatarThumbnailSrc = null;
+    this.selectedFile = null;
+    if (this.fileUpload) {
+      this.fileUpload.clear();
+    }
+    this.showInfo('Foto removida', 'A foto de perfil foi removida.');
+  }
+
+  /**
+   * ✅ Abre modal com imagem ampliada
+   */
+  openImageModal(): void {
+    if (this.avatarImageSrc) {
+      this.displayImageModal = true;
+    }
+  }
+
+  /**
+   * ✅ ATUALIZADO: Salva dados pessoais
+   * Envia apenas imagem original - backend gera thumbnail
+   */
   async salvarDadosPessoais(): Promise<void> {
     if (this.dadosPessoaisForm.invalid) {
       this.markFormGroupTouched(this.dadosPessoaisForm);
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Atenção',
-        detail: 'Por favor, preencha todos os campos obrigatórios corretamente.',
-        life: 4000
-      });
+      this.showWarning('Atenção', 'Por favor, preencha todos os campos obrigatórios corretamente.');
       return;
     }
 
@@ -171,20 +259,37 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
 
       const userId = this.getUserId();
       const token = this.getToken();
-      const posicaoAtual = 2; // Esta tela é posição 2
+      const posicaoAtual = 2;
       const novaPosicao = posicaoAtual + 1;
 
       console.log('🔄 Salvando dados pessoais...');
 
-      // ✅ ÚNICO PONTO DE ATUALIZAÇÃO: Envia tudo junto pro backend
-      await this.http.patch(
+      // Prepara payload
+      const payload: any = { 
+        posicaoCadastroComplementar: novaPosicao,
+        dataNascimento: dataFormatada,
+        telefone: dados.telefone.replace(/\D/g, ''),
+        genero: dados.genero
+      };
+
+      // ✅ SIMPLIFICADO: Envia apenas a imagem original
+      // Backend irá processar e gerar o thumbnail automaticamente
+      if (this.avatarImageSrc && typeof this.avatarImageSrc === 'string') {
+        payload.avatarBase64 = this.avatarImageSrc;
+        console.log('🖼️ Enviando avatar para processamento no backend');
+      }
+
+      // ❌ REMOVIDO: avatarThumbnailBase64 - não precisa mais enviar
+
+      console.log('📤 Payload:', {
+        ...payload,
+        avatarBase64: payload.avatarBase64 ? `[${payload.avatarBase64.length} bytes]` : undefined
+      });
+
+      // Envia dados para o backend
+      const response: any = await this.http.patch(
         `${this.apiUrl}/users/${userId}/posicao-cadastro`,
-        { 
-          posicaoCadastroComplementar: novaPosicao,
-          dataNascimento: dataFormatada,
-          telefone: dados.telefone.replace(/\D/g, ''),
-          genero: dados.genero
-        },
+        payload,
         {
           headers: new HttpHeaders({
             'Authorization': `Bearer ${token}`,
@@ -195,41 +300,80 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
 
       console.log(`✅ Backend atualizado - Posição: ${novaPosicao}`);
 
-      // ✅ Atualiza o cache local com a nova posição e dados
-      const usuarioAtual = this.userService.getCurrentUser();
-      if (usuarioAtual) {
-        usuarioAtual.posicaoCadastroComplementar = novaPosicao;
-        usuarioAtual.dataNascimento = dataFormatada;
-        usuarioAtual.telefone = dados.telefone.replace(/\D/g, '');
-        usuarioAtual.genero = dados.genero;
+      // ✅ ATUALIZADO: Recarrega dados do usuário para pegar avatar processado
+      const userAtualizado = await this.userService.fetchUserData(userId, token);
+      
+      if (userAtualizado) {
+        // Atualiza cache local
+        this.userService.setCurrentUser(userAtualizado);
         
-        this.userService.setCurrentUser(usuarioAtual);
-        console.log(`🔒 Cache local atualizado - Posição: ${novaPosicao}`);
+        // ✅ Atualiza avatar e thumbnail com versões processadas do backend
+        if (userAtualizado.avatarUrl) {
+          this.avatarImageSrc = userAtualizado.avatarUrl;
+        }
+        if (userAtualizado.avatarThumbnailUrl) {
+          this.avatarThumbnailSrc = userAtualizado.avatarThumbnailUrl;
+        }
+        
+        console.log(`🔒 Cache local atualizado com avatar processado`);
       }
 
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Sucesso',
-        detail: 'Dados pessoais salvos com sucesso!',
-        life: 2000
-      });
+      this.showSuccess('Sucesso', 'Dados pessoais salvos com sucesso!');
 
-    setTimeout(() => {
-      console.log('➡️ Redirecionando para /app/cadastro-complementar/condominio');
-      this.router.navigate(['/app/cadastro-complementar/condominio']); // ✅ CORRETO
-    }, 1500);
+      setTimeout(() => {
+        console.log('➡️ Redirecionando para /app/cadastro-complementar/condominio');
+        this.router.navigate(['/app/cadastro-complementar/condominio']);
+      }, 1500);
 
     } catch (error: any) {
       console.error('❌ Erro ao salvar dados pessoais:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível salvar os dados. Tente novamente.',
-        life: 5000
-      });
+      this.showError('Erro', 'Não foi possível salvar os dados. Tente novamente.');
     } finally {
       this.loading = false;
     }
+  }
+
+  /**
+   * ✅ Métodos para exibir mensagens toast centralizadas
+   */
+  private showSuccess(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: summary,
+      detail: detail,
+      life: 3000,
+      key: 'tc'
+    });
+  }
+
+  private showError(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: summary,
+      detail: detail,
+      life: 5000,
+      key: 'tc'
+    });
+  }
+
+  private showWarning(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'warn',
+      summary: summary,
+      detail: detail,
+      life: 4000,
+      key: 'tc'
+    });
+  }
+
+  private showInfo(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: summary,
+      detail: detail,
+      life: 3000,
+      key: 'tc'
+    });
   }
 
   private getUserId(): string {
@@ -248,29 +392,5 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
         this.markFormGroupTouched(control);
       }
     });
-  }
-
-  logout(): void {
-    this.haptic.lightTap();
-    
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userId');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userEmail');
-    sessionStorage.removeItem('userId');
-
-    console.log('✅ Logout realizado');
-    
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Logout',
-      detail: 'Você saiu do sistema.',
-      life: 2000
-    });
-
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 1000);
   }
 }

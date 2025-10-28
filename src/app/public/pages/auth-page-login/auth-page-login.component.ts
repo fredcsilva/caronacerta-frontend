@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // ✅ Adiciona ActivatedRoute
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
@@ -32,6 +32,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AuthPageLoginComponent implements OnInit {
   private router = inject(Router);
+  private route = inject(ActivatedRoute); // ✅ Injeta ActivatedRoute
   private haptic = inject(HapticService);
   private authService = inject(AuthService);
   private userService = inject(UserService);
@@ -48,7 +49,24 @@ export class AuthPageLoginComponent implements OnInit {
   isLoading: boolean = false;
 
   ngOnInit() {
+    // ✅ Verifica se veio com parâmetro de sessão expirada
+    this.route.queryParams.subscribe(params => {
+      if (params['sessionExpired'] === 'true') {
+        this.showSessionExpiredMessage();
+      }
+    });
+
     this.loadSavedCredentials();
+  }
+
+  /**
+   * ✅ Exibe mensagem de sessão expirada
+   */
+  private showSessionExpiredMessage(): void {
+    this.showMessage = true;
+    this.messageText = 'O tempo de sessão acabou. Por favor, faça login novamente.';
+    this.messageSeverity = 'warn';
+    this.haptic.lightTap();
   }
 
   private loadSavedCredentials() {
@@ -57,7 +75,7 @@ export class AuthPageLoginComponent implements OnInit {
     const rememberFlag = localStorage.getItem('rememberMe');
 
     if (rememberFlag === 'true' && savedEmail && encryptedPassword) {
-      console.log('🔐 Credenciais criptografadas encontradas. Descriptografando...');
+      console.log('🔍 Credenciais criptografadas encontradas. Descriptografando...');
       
       const decryptedPassword = this.encryptionService.decrypt(encryptedPassword);
       
@@ -184,7 +202,7 @@ export class AuthPageLoginComponent implements OnInit {
         console.log('💾 Dados salvos. Posição:', response.posicaoCadastroComplementar);
         this.showSuccess('Login realizado com sucesso!');
 
-        // ✅ AQUI QUEM REDIRECIONA É O COMPONENTE
+        // Redireciona após 1 segundo
         setTimeout(() => {
           this.isLoading = false;
           
@@ -219,7 +237,7 @@ export class AuthPageLoginComponent implements OnInit {
   }
 
   /**
-   * ✅ Retorna a rota baseada na posição
+   * Retorna a rota baseada na posição
    */
   private getRotaPorPosicao(posicao: number): string {
     const rotas: Record<number, string> = {

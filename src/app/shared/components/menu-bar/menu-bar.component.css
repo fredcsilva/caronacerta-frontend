@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  position: fixed; /* ✅ MUDOU DE sticky PARA fixed */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -30,25 +30,46 @@
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+/* ✅ NOVO: Container para título e subtítulo */
+.title-container {
+  flex-grow: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .title {
   font-family: 'Nunito', sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
-  flex-grow: 1;
-  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
-/* Quando tem botão à esquerda, compensa o espaço para centralizar o título */
-.menu-bar:has(.back-button):not(:has(.logout-button)) .title {
+/* ✅ NOVO: Estilo do subtítulo */
+.subtitle {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Quando tem botão à esquerda, compensa o espaço para centralizar */
+.menu-bar:has(.back-button):not(:has(.logout-button)) .title-container {
   margin-right: 40px;
 }
 
-/* Quando tem botão à direita, compensa o espaço para centralizar o título */
-.menu-bar:has(.logout-button):not(:has(.back-button)) .title {
+/* Quando tem botão à direita, compensa o espaço para centralizar */
+.menu-bar:has(.logout-button):not(:has(.back-button)) .title-container {
   margin-left: 40px;
 }
 
@@ -58,7 +79,11 @@
   }
   
   .title {
-    font-size: 1rem;
+    font-size: 1.125rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
   }
 
   .back-button,
@@ -66,5 +91,15 @@
     font-size: 1.25rem;
     min-width: 36px;
     height: 36px;
+  }
+}
+
+@media (max-width: 375px) {
+  .title {
+    font-size: 1rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
   }
 }

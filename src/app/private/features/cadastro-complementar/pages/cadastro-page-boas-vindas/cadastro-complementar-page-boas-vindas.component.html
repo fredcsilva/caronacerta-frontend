@@ -1,25 +1,23 @@
+<!-- ✅ Menu-bar com título e subtítulo -->
+<app-menu-bar
+  [title]="'Cadastro Complementar'"
+  [subtitle]="'Bem-vindo'"
+  [showBackButton]="false"
+  [showLogoutButton]="true">
+</app-menu-bar>
+
 <div class="boas-vindas-container">
   <p-toast></p-toast>
 
-  <!-- Menu-bar Dinâmico -->
-  <app-menu-bar 
-    title="Cadastro Complementar"
-    [showLogoutButton]="true">
-  </app-menu-bar>
-
   <div class="content-wrapper">
     <p-card>
+      <!-- Conteúdo do card -->
       <div class="welcome-content">
         <div class="icon-circle">
           <i class="pi pi-check-circle"></i>
         </div>
 
         <h2>Complete seu cadastro</h2>
-        
-        <p class="descricao">
-          Para aproveitar ao máximo nossa plataforma de caronas colaborativas, 
-          precisamos de algumas informações adicionais.
-        </p>
 
         <div class="beneficios">
           <div class="beneficio-item">

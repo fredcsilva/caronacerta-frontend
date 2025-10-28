@@ -23,7 +23,7 @@ export const CADASTRO_COMPLEMENTAR_ROUTES: Routes = [
     path: 'termos',
     loadComponent: () => 
       import('./pages/cadastro-page-termos/cadastro-complementar-page-termos.component')
-        .then(m => m.CadastroComplementarPageTermosComponent)
+        .then(m => m.CadastroComplementarTermosComponent) // ✅ CORRIGIDO: Removido "Page" do nome
   },
   {
     path: 'sucesso',

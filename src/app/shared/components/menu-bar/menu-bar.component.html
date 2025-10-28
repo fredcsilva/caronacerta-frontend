@@ -11,8 +11,13 @@
     </button>
   }
   
-  <!-- Título (centralizado) -->
-  <h1 class="title">{{ title }}</h1>
+  <!-- Título e Subtítulo (centralizado) -->
+  <div class="title-container">
+    <h1 class="title">{{ title }}</h1>
+    @if (subtitle) {
+      <p class="subtitle">{{ subtitle }}</p>
+    }
+  </div>
   
   <!-- Botão Logout (lado direito) -->
   @if (showLogoutButton) {

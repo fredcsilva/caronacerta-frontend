@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { HapticService } from '../../../core/services/haptic.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-menu-bar',
@@ -19,9 +18,10 @@ export class MenuBarComponent {
   
   // ⭐ Inputs para customização
   @Input() title: string = 'Carona Certa';
+  @Input() subtitle: string = ''; // ✅ NOVO: Subtítulo opcional
   @Input() showBackButton: boolean = false;
   @Input() showLogoutButton: boolean = false;
-  @Input() backRoute: string = '/';
+  @Input() backRoute: string = '/boas-vindas';
 
   /**
    * Navega para a rota de volta configurada
@@ -39,12 +39,14 @@ export class MenuBarComponent {
     this.haptic.lightTap();
     
     // Limpar dados de autenticação
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userId');
-    sessionStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('token');
     sessionStorage.removeItem('userEmail');
     sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('currentUser');
 
     console.log('Logout realizado');
     

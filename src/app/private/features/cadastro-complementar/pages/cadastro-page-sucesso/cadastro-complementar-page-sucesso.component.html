@@ -1,12 +1,15 @@
+<!-- ✅ Menu-bar com título e subtítulo -->
+<app-menu-bar
+  [title]="'Cadastro Finalizado!'"
+  [subtitle]="'Bem-vindo ao Carona Certa'"
+  [showBackButton]="false"
+  [showLogoutButton]="false">
+</app-menu-bar>
+
 <div class="sucesso-container">
   <div class="content-wrapper">
     <p-card>
-      <!-- ✅ Header com progress indicator -->
-      <div class="card-header">
-        <h1>Cadastro Finalizado!</h1>
-        <p>Bem-vindo ao Carona Certa</p>
-      </div>
-
+      <!-- Conteúdo da tela de sucesso -->
       <div class="success-content">
         <div class="success-icon">
           <i class="pi pi-check-circle"></i>

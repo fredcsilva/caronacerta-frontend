@@ -1,25 +1,19 @@
+<!-- ✅ Menu-bar com título e subtítulo -->
+<app-menu-bar
+  [title]="'Termos e Privacidade'"
+  [subtitle]="'Passo 3 de 3'"
+  [showBackButton]="false"
+  [showLogoutButton]="true">
+</app-menu-bar>
+
 <div class="termos-container">
-  <p-toast></p-toast>
+  <p-toast key="tc" position="top-center"></p-toast>
 
   <div class="content-wrapper">
     <p-card>
-      <!-- Header -->
-      <div class="card-header">
-        <h1>Termos e Privacidade</h1>
-        <p>Passo 3 de 3</p>
-      </div>
-
       <!-- Conteúdo do formulário -->
       <div class="card-content">
         
-        <!-- ✅ Botão Logout no canto superior direito do content -->
-        <button 
-          class="logout-button-content"
-          (click)="logout()"
-          title="Sair">
-          <i class="pi pi-sign-out"></i>
-        </button>
-
         <form [formGroup]="termosForm" (ngSubmit)="aceitarTermos()">
           
           <!-- Termos de Uso -->

@@ -1,10 +1,10 @@
 .boas-vindas-container {
   min-height: 100vh;
-  max-height: 100vh;
   background-color: #F1F8E9;
   display: flex;
   flex-direction: column;
   padding: 0;
+  padding-top: 80px; /* ✅ Compensa altura do menu-bar fixo (64px) + espaço (16px) */
   overflow-y: auto;
 }
 
@@ -21,37 +21,40 @@
 ::ng-deep .p-card {
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 2rem;
 }
 
-.card-header {
-  background: linear-gradient(135deg, #7E57C2 0%, #9575CD 100%);
-  padding: 2rem;
-  border-radius: 12px 12px 0 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  color: #FFFFFF;
+::ng-deep .p-card .p-card-body {
+  padding: 0 !important;
 }
 
-.card-header i {
-  font-size: 4rem;
-}
-
-.card-header h1 {
-  margin: 0;
-  font-family: 'Nunito', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-}
+/* ❌ REMOVIDO: Estilos do .card-header (menu-bar já é o header) */
 
 .welcome-content {
   padding: 2rem;
   text-align: center;
 }
 
-h3 {
+.icon-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7E57C2 0%, #9575CD 100%);
+  box-shadow: 0 4px 20px rgba(126, 87, 194, 0.3);
+}
+
+.icon-circle i {
+  font-size: 4rem;
+  color: #FFFFFF;
+}
+
+h2 {
   font-family: 'Nunito', sans-serif;
   font-size: 1.75rem;
   font-weight: 700;
@@ -126,10 +129,6 @@ h3 {
   max-width: 300px;
 }
 
-::ng-deep .p-card-footer {
-  padding: 0 2rem 2rem;
-}
-
 ::ng-deep .p-button-lg {
   padding: 1rem 2.5rem;
   font-family: 'Nunito', sans-serif;
@@ -147,9 +146,24 @@ h3 {
   border-color: #6A4FA3;
 }
 
+/* ✅ TABLETS E SMARTPHONES (< 768px) */
 @media (max-width: 768px) {
-  .card-header h1 {
-    font-size: 1.5rem;
+  .boas-vindas-container {
+    padding-top: 72px; /* ✅ Compensa menu mobile (56px) + espaço (16px) */
+  }
+
+  .content-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .icon-circle {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .icon-circle i {
+    font-size: 3rem;
   }
 
   h2 {
@@ -161,6 +175,30 @@ h3 {
   }
 
   .beneficio-item span {
+    font-size: 0.95rem;
+  }
+}
+
+/* ✅ SMARTPHONES MUITO PEQUENOS (< 375px) */
+@media (max-width: 375px) {
+  .boas-vindas-container {
+    padding-top: 68px; /* ✅ Para telas muito pequenas */
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .icon-circle i {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .descricao {
     font-size: 0.95rem;
   }
 }

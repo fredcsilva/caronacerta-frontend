@@ -12,6 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { HapticService } from '../../../../../core/services/haptic.service';
 import { UserService } from '../../../../../core/services/user.service';
+import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component';
 
 @Component({
   selector: 'app-cadastro-complementar-condominio',
@@ -23,7 +24,8 @@ import { UserService } from '../../../../../core/services/user.service';
     Card,
     InputText,
     Select,
-    Toast
+    Toast,
+    MenuBarComponent
   ],
   providers: [MessageService],
   templateUrl: './cadastro-complementar-page-condominio.component.html',
@@ -33,7 +35,7 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
   
   condominioForm!: FormGroup;
   loading = false;
-  carregandoDados = true; // ✅ NOVO: loading para carregamento inicial
+  carregandoDados = true;
   private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
   private haptic = inject(HapticService);
   
@@ -59,7 +61,7 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
   }
 
   /**
-   * ✅ NOVO: Carrega dados do usuário do backend
+   * ✅ Carrega dados do usuário do backend
    */
   private async carregarDadosUsuario(): Promise<void> {
     this.carregandoDados = true;
@@ -98,12 +100,7 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
 
     } catch (error) {
       console.error('❌ Erro ao carregar dados do usuário:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível carregar seus dados. Tente novamente.',
-        life: 5000
-      });
+      this.showError('Erro', 'Não foi possível carregar seus dados. Tente novamente.');
     } finally {
       this.carregandoDados = false;
     }
@@ -122,12 +119,7 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
   async salvarCondominio(): Promise<void> {
     if (this.condominioForm.invalid) {
       this.markFormGroupTouched(this.condominioForm);
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Atenção',
-        detail: 'Por favor, preencha todos os campos obrigatórios corretamente.',
-        life: 4000
-      });
+      this.showWarning('Atenção', 'Por favor, preencha todos os campos obrigatórios corretamente.');
       return;
     }
 
@@ -177,33 +169,68 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
         console.log(`🔒 Cache local atualizado - Posição: ${novaPosicao}`);
       }
 
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Sucesso',
-        detail: 'Dados do condomínio salvos com sucesso!',
-        life: 2000
-      });
+      this.showSuccess('Sucesso', 'Dados do condomínio salvos com sucesso!');
 
-    setTimeout(() => {
-      console.log('➡️ Redirecionando para /app/cadastro-complementar/termos');
-      this.router.navigate(['/app/cadastro-complementar/termos']); // ✅ CORRETO
-    }, 1500);
+      setTimeout(() => {
+        console.log('➡️ Redirecionando para /app/cadastro-complementar/termos');
+        this.router.navigate(['/app/cadastro-complementar/termos']);
+      }, 1500);
 
     } catch (error: any) {
       console.error('❌ Erro ao salvar dados do condomínio:', error);
 
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível salvar os dados. Tente novamente.',
-        life: 5000
-      });
+      this.showError('Erro', 'Não foi possível salvar os dados. Tente novamente.');
     } finally {
       this.loading = false;
     }
   }
 
- private getUserId(): string {
+
+  /**
+   * ✅ Métodos para exibir mensagens toast centralizadas
+   */
+  private showSuccess(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: summary,
+      detail: detail,
+      life: 3000,
+      key: 'tc'
+    });
+  }
+
+  private showError(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: summary,
+      detail: detail,
+      life: 5000,
+      key: 'tc'
+    });
+  }
+
+  private showWarning(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'warn',
+      summary: summary,
+      detail: detail,
+      life: 4000,
+      key: 'tc'
+    });
+  }
+
+  private showInfo(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: summary,
+      detail: detail,
+      life: 3000,
+      key: 'tc'
+    });
+  }
+  // ❌ REMOVIDO: método logout() - deve estar no menu-bar component
+
+  private getUserId(): string {
     return localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';
   }
 
@@ -219,29 +246,5 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
         this.markFormGroupTouched(control);
       }
     });
-  }
-
-  logout(): void {
-    this.haptic.lightTap();
-    
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userId');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userEmail');
-    sessionStorage.removeItem('userId');
-
-    console.log('✅ Logout realizado');
-    
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Logout',
-      detail: 'Você saiu do sistema.',
-      life: 2000
-    });
-
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 1000);
   }
 }
