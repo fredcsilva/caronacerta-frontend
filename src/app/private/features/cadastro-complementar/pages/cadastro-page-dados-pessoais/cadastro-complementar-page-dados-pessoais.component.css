@@ -387,51 +387,6 @@ small.p-error {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Cores personalizadas */
-:host ::ng-deep .p-toast-message-success {
-  background-color: #81C784;
-  border: none;
-  color: #FFFFFF;
-}
-
-:host ::ng-deep .p-toast-message-success .p-toast-message-icon,
-:host ::ng-deep .p-toast-message-success .p-toast-icon-close {
-  color: #FFFFFF;
-}
-
-:host ::ng-deep .p-toast-message-error {
-  background-color: #E57373;
-  border: none;
-  color: #FFFFFF;
-}
-
-:host ::ng-deep .p-toast-message-error .p-toast-message-icon,
-:host ::ng-deep .p-toast-message-error .p-toast-icon-close {
-  color: #FFFFFF;
-}
-
-:host ::ng-deep .p-toast-message-warn {
-  background-color: #FFB74D;
-  border: none;
-  color: #424242;
-}
-
-:host ::ng-deep .p-toast-message-warn .p-toast-message-icon,
-:host ::ng-deep .p-toast-message-warn .p-toast-icon-close {
-  color: #424242;
-}
-
-:host ::ng-deep .p-toast-message-info {
-  background-color: #7E57C2;
-  border: none;
-  color: #FFFFFF;
-}
-
-:host ::ng-deep .p-toast-message-info .p-toast-message-icon,
-:host ::ng-deep .p-toast-message-info .p-toast-icon-close {
-  color: #FFFFFF;
-}
-
 @media (max-width: 767px) {
   :host ::ng-deep .p-toast-top-center {
     top: 72px !important;

@@ -240,6 +240,15 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
    * Envia apenas imagem original - backend gera thumbnail
    */
   async salvarDadosPessoais(): Promise<void> {
+      // ✅ ADICIONAR validação de avatar
+    const temAvatarExistente = this.avatarImageSrc && this.avatarImageSrc.startsWith('https://');
+    const temAvatarNovo = this.selectedFile !== null;
+    
+    if (!temAvatarExistente && !temAvatarNovo) {
+      this.showWarning('Foto Obrigatória', 'Por favor, selecione uma foto de perfil.');
+      return;
+    }
+
     if (this.dadosPessoaisForm.invalid) {
       this.markFormGroupTouched(this.dadosPessoaisForm);
       this.showWarning('Atenção', 'Por favor, preencha todos os campos obrigatórios corretamente.');
@@ -274,13 +283,12 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
 
       // ✅ SIMPLIFICADO: Envia apenas a imagem original
       // Backend irá processar e gerar o thumbnail automaticamente
-      if (this.avatarImageSrc && typeof this.avatarImageSrc === 'string') {
+      if (this.selectedFile) {  // Só envia se selecionou NOVO arquivo
         payload.avatarBase64 = this.avatarImageSrc;
-        console.log('🖼️ Enviando avatar para processamento no backend');
+        console.log('🖼️ Enviando avatar NOVO para processamento');
       }
 
       // ❌ REMOVIDO: avatarThumbnailBase64 - não precisa mais enviar
-
       console.log('📤 Payload:', {
         ...payload,
         avatarBase64: payload.avatarBase64 ? `[${payload.avatarBase64.length} bytes]` : undefined
