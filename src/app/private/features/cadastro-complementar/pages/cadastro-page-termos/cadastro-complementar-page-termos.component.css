@@ -39,11 +39,8 @@
   padding: 0 !important;
 }
 
-/* ❌ REMOVIDO: Estilos do .card-header (menu-bar já é o header) */
-
 .card-content {
   padding: 2rem;
-  /* ❌ REMOVIDO: position: relative (não precisa mais para o botão de logout) */
 }
 
 form {
@@ -73,39 +70,131 @@ form {
   background-color: #FFFFFF;
 }
 
+/* =========================================
+   NOVA ÁREA: CONTEÚDO DOS TERMOS DE USO
+   ========================================= */
+   :host ::ng-deep .termos-conteudo hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  height: 0;
+  opacity: 0.7;
+}
+
+/* Mantém o estilo dos títulos */
+:host ::ng-deep .termos-conteudo h1,
+:host ::ng-deep .termos-conteudo h2,
+:host ::ng-deep .termos-conteudo h3,
+:host ::ng-deep .termos-conteudo h4,
+:host ::ng-deep .termos-conteudo h5,
+:host ::ng-deep .termos-conteudo h6 {
+  line-height: 1.2;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  word-break: keep-all;
+  white-space: normal;
+}
+
+/* Ajustes extras para consistência */
+:host ::ng-deep .termos-conteudo p {
+  margin: 0.4rem 0;
+  line-height: 1.6;
+}
+
+:host ::ng-deep .termos-conteudo ul {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+  padding: 0;
+}
+
+
 .termos-conteudo {
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   font-family: 'Open Sans', sans-serif;
   color: #424242;
+  line-height: 1.7;
+  font-size: 15px;
+  text-align: justify;
 }
 
+/* 🔸 Espaçamento antes e depois de cada <hr> */
+.termos-conteudo hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1.5rem 0; /* espaçamento antes e depois */
+  height: 0;
+  opacity: 0.7;
+}
+
+/* Cabeçalhos principais */
 .termos-conteudo h3 {
   font-family: 'Nunito', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #424242;
-  margin: 1.5rem 0 0.5rem 0;
+  margin-top: 1.5rem;
+  margin-bottom: 0.6rem;
 }
 
-.termos-conteudo h3:first-child {
-  margin-top: 0;
+/* Subtítulos */
+.termos-conteudo h4 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5E35B1;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
+/* 🔸 Evitar espaçamento entre linhas quebradas nos títulos */
+.termos-conteudo h1,
+.termos-conteudo h2,
+.termos-conteudo h3,
+.termos-conteudo h4,
+.termos-conteudo h5,
+.termos-conteudo h6 {
+  line-height: 1.2; /* linhas mais próximas, ideal para títulos quebrados */
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  word-break: keep-all;
+  white-space: normal; /* permite quebra natural de linha */
+}
+
+/* Parágrafos e listas */
 .termos-conteudo p {
   line-height: 1.6;
-  margin: 0.5rem 0;
+  margin: 0.6rem 0;
 }
 
 .termos-conteudo ul {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
+  margin-left: 1.25rem;
+  margin-bottom: 0.6rem;
+  padding-left: 0.5rem;
+  margin: 0.5rem 0 0.5rem 1.5rem;
+  padding: 0;
 }
 
 .termos-conteudo li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   line-height: 1.5;
 }
 
+/* Negrito */
+.termos-conteudo strong {
+  font-weight: 700;
+  color: #4A148C; /* roxo-escuro da paleta “Social & Cooperativo” */
+}
+
+/* Linha divisória */
+.termos-conteudo hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1rem 0;
+}
+
+/* =========================================
+   CHECKBOX E BOTÕES
+   ========================================= */
 .checkbox-field {
   display: flex;
   align-items: center;
@@ -161,22 +250,23 @@ form {
   border-color: #BDBDBD !important;
 }
 
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+
 /* ✅ TABLETS E SMARTPHONES (< 768px) */
 @media (max-width: 768px) {
   .termos-container {
     padding-top: 72px;
-    /* ✅ SCROLL GARANTIDO EM MOBILE */
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    /* ✅ Previne problema de scroll em iOS */
     position: relative;
   }
 
   .content-wrapper {
     padding: 1rem 0.5rem;
     padding-bottom: 2rem;
-    /* ✅ Garante que o conteúdo não seja cortado */
     min-height: min-content;
   }
 
@@ -207,7 +297,12 @@ form {
 
   .termos-conteudo h3 {
     font-size: 1rem;
-    margin: 1rem 0 0.4rem 0;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .termos-conteudo h4 {
+    font-size: 0.95rem;
   }
 
   .checkbox-field {
@@ -232,7 +327,7 @@ form {
   }
 }
 
-/* ✅ PERSONALIZAÇÃO DA BARRA DE ROLAGEM (opcional - apenas desktop) */
+/* ✅ SCROLLBAR PERSONALIZADA (desktop) */
 @media (min-width: 769px) {
   .termos-container::-webkit-scrollbar {
     width: 8px;
@@ -256,7 +351,7 @@ form {
 /* ✅ SMARTPHONES MUITO PEQUENOS (< 375px) */
 @media (max-width: 375px) {
   .termos-container {
-    padding-top: 68px; /* ✅ Para telas muito pequenas */
+    padding-top: 68px;
   }
 
   .card-content {
@@ -284,6 +379,7 @@ form {
   }
 }
 
+/* ✅ AJUSTES PARA TOAST EM MOBILE */
 @media (max-width: 767px) {
   :host ::ng-deep .p-toast-top-center {
     top: 72px !important;

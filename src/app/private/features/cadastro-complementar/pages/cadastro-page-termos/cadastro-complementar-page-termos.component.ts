@@ -15,6 +15,7 @@ import { RippleModule } from 'primeng/ripple';
 import { environment } from '../../../../../../environments/environment';
 import { HapticService } from '../../../../../core/services/haptic.service';
 import { UserService } from '../../../../../core/services/user.service';
+import { ConfiguracaoAppService } from '../../../../../core/services/configuracao-app.service';
 
 import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component';
 
@@ -41,6 +42,11 @@ export class CadastroComplementarTermosComponent implements OnInit {
   termosForm!: FormGroup;
   loading = false;
   carregandoDados = true;
+  
+  // ✅ NOVO - Textos carregados do Firestore
+  textoTermosCondicoes: string = '';
+  textoPoliticaPrivacidade: string = '';
+  
   private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
   private haptic = inject(HapticService);
 
@@ -49,12 +55,43 @@ export class CadastroComplementarTermosComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private messageService: MessageService,
-    private http: HttpClient
+    private http: HttpClient,
+    private configuracaoAppService: ConfiguracaoAppService // ✅ NOVO
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.initForm();
+    await this.carregarTextosTermosPrivacidade(); // ✅ NOVO - Carrega textos primeiro
     await this.carregarDadosUsuario();
+  }
+
+  /**
+   * ✅ NOVO - Carrega textos de Termos e Privacidade do Firestore
+   */
+  private async carregarTextosTermosPrivacidade(): Promise<void> {
+    try {
+      console.log('📄 Carregando textos de termos e privacidade...');
+
+      const resultado = await this.configuracaoAppService.getTermosEPrivacidade().toPromise();
+
+      if (resultado) {
+        this.textoTermosCondicoes = resultado.termosCondicoes || '';
+        this.textoPoliticaPrivacidade = resultado.politicaPrivacidade || '';
+
+        console.log('✅ Textos carregados:', {
+          termos: this.textoTermosCondicoes.length + ' caracteres',
+          privacidade: this.textoPoliticaPrivacidade.length + ' caracteres'
+        });
+      }
+
+    } catch (error) {
+      console.error('❌ Erro ao carregar textos:', error);
+      this.showError('Erro', 'Não foi possível carregar os termos e política de privacidade.');
+      
+      // Textos padrão em caso de erro
+      this.textoTermosCondicoes = 'Erro ao carregar os termos de uso. Por favor, tente novamente.';
+      this.textoPoliticaPrivacidade = 'Erro ao carregar a política de privacidade. Por favor, tente novamente.';
+    }
   }
 
   /**
@@ -209,8 +246,6 @@ export class CadastroComplementarTermosComponent implements OnInit {
       key: 'tc'
     });
   }
-
-  // ❌ REMOVIDO: método logout() - deve estar no menu-bar component
 
   private getUserId(): string {
     return localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';

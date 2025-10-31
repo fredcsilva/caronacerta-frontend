@@ -15,66 +15,39 @@
       <div class="card-content">
         <form [formGroup]="condominioForm" (ngSubmit)="salvarCondominio()">
           
-          <!-- País -->
+          <!-- Condomínio -->
           <div class="field">
-            <label for="pais">País *</label>
+            <label for="condominio">Condomínio *</label>
             <p-select
-              inputId="pais"
-              formControlName="pais"
-              [options]="paisOptions"
-              placeholder="Selecione o país"
+              inputId="condominio"
+              formControlName="condominio"
+              [options]="condominioOptions"
+              placeholder="Selecione seu condomínio"
               optionLabel="label"
               optionValue="value"
-              [disabled]="true"
-              [fluid]="true">
+              [filter]="true"
+              filterPlaceholder="Buscar condomínio"
+              [fluid]="true"
+              [class.ng-invalid]="condominioForm.get('condominio')?.invalid && condominioForm.get('condominio')?.touched">
             </p-select>
-          </div>
-
-          <!-- Estado -->
-          <div class="field">
-            <label for="estado">Estado *</label>
-            <p-select
-              inputId="estado"
-              formControlName="estado"
-              [options]="estadoOptions"
-              placeholder="Selecione o estado"
-              optionLabel="label"
-              optionValue="value"
-              [disabled]="true"
-              [fluid]="true">
-            </p-select>
-          </div>
-
-          <!-- Nome do Condomínio -->
-          <div class="field">
-            <label for="nomeCondominio">Nome do Condomínio *</label>
-            <input
-              pInputText
-              id="nomeCondominio"
-              formControlName="nomeCondominio"
-              placeholder="Digite o nome do condomínio"
-              [class.ng-invalid]="condominioForm.get('nomeCondominio')?.invalid && condominioForm.get('nomeCondominio')?.touched"
-              [class.ng-dirty]="condominioForm.get('nomeCondominio')?.touched"
-            />
-            <small class="p-error" *ngIf="condominioForm.get('nomeCondominio')?.hasError('required') && condominioForm.get('nomeCondominio')?.touched">
-              Nome do condomínio é obrigatório.
-            </small>
-            <small class="p-error" *ngIf="condominioForm.get('nomeCondominio')?.hasError('minlength') && condominioForm.get('nomeCondominio')?.touched">
-              Nome deve ter no mínimo 3 caracteres.
+            <small class="p-error" *ngIf="condominioForm.get('condominio')?.hasError('required') && condominioForm.get('condominio')?.touched">
+              Condomínio é obrigatório.
             </small>
           </div>
 
           <!-- Bloco -->
           <div class="field">
             <label for="bloco">Bloco *</label>
-            <input
-              pInputText
-              id="bloco"
+            <p-select
+              inputId="bloco"
               formControlName="bloco"
-              placeholder="Ex: A, B, C, Torre 1"
-              [class.ng-invalid]="condominioForm.get('bloco')?.invalid && condominioForm.get('bloco')?.touched"
-              [class.ng-dirty]="condominioForm.get('bloco')?.touched"
-            />
+              [options]="blocoOptions"
+              placeholder="Selecione o bloco"
+              optionLabel="label"
+              optionValue="value"
+              [fluid]="true"
+              [class.ng-invalid]="condominioForm.get('bloco')?.invalid && condominioForm.get('bloco')?.touched">
+            </p-select>
             <small class="p-error" *ngIf="condominioForm.get('bloco')?.hasError('required') && condominioForm.get('bloco')?.touched">
               Bloco é obrigatório.
             </small>
@@ -82,20 +55,21 @@
 
           <!-- Apartamento -->
           <div class="field">
-            <label for="apartamento">Número do Apartamento *</label>
-            <input
-              pInputText
-              id="apartamento"
+            <label for="apartamento">Apartamento *</label>
+            <p-select
+              inputId="apartamento"
               formControlName="apartamento"
-              placeholder="Ex: 101, 202, 303"
-              [class.ng-invalid]="condominioForm.get('apartamento')?.invalid && condominioForm.get('apartamento')?.touched"
-              [class.ng-dirty]="condominioForm.get('apartamento')?.touched"
-            />
+              [options]="apartamentoOptions"
+              placeholder="Selecione o apartamento"
+              optionLabel="label"
+              optionValue="value"
+              [filter]="true"
+              filterPlaceholder="Buscar apartamento"
+              [fluid]="true"
+              [class.ng-invalid]="condominioForm.get('apartamento')?.invalid && condominioForm.get('apartamento')?.touched">
+            </p-select>
             <small class="p-error" *ngIf="condominioForm.get('apartamento')?.hasError('required') && condominioForm.get('apartamento')?.touched">
-              Número do apartamento é obrigatório.
-            </small>
-            <small class="p-error" *ngIf="condominioForm.get('apartamento')?.hasError('pattern') && condominioForm.get('apartamento')?.touched">
-              Digite apenas números.
+              Apartamento é obrigatório.
             </small>
           </div>
 

@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
-import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
@@ -12,6 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../../environments/environment';
 import { HapticService } from '../../../../../core/services/haptic.service';
 import { UserService } from '../../../../../core/services/user.service';
+import { CondominioService, CondominioDTO, BlocoDTO } from '../../../../../core/services/condominio.service';
 import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component';
 
 @Component({
@@ -22,7 +22,6 @@ import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu
     ReactiveFormsModule,
     Button,
     Card,
-    InputText,
     Select,
     Toast,
     MenuBarComponent
@@ -36,32 +35,212 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
   condominioForm!: FormGroup;
   loading = false;
   carregandoDados = true;
+  
   private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
   private haptic = inject(HapticService);
   
-  paisOptions = [
-    { label: 'Brasil', value: 'BRASIL' }
-  ];
+  // Opções dos dropdowns
+  condominioOptions: { label: string; value: string }[] = [];
+  blocoOptions: { label: string; value: string }[] = [];
+  apartamentoOptions: { label: string; value: string }[] = [];
   
-  estadoOptions = [
-    { label: 'Rio Grande do Norte', value: 'RN' }
-  ];
+  // Dados carregados
+  condominios: CondominioDTO[] = [];
+  condominioSelecionado: CondominioDTO | null = null;
+  slugAtual: string = '';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
+    private condominioService: CondominioService,
     private messageService: MessageService,
     private http: HttpClient
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.initForm();
-    await this.carregarDadosUsuario();
+    await this.carregarCondominios();
+    await this.preencherCondominioSeJaExiste();  // ✅ Só preenche o condomínio
+  }
+
+  initForm(): void {
+    this.condominioForm = this.fb.group({
+      condominio: ['', Validators.required],
+       bloco: [{ value: '', disabled: true }, Validators.required],  // ✅ Inicia desabilitado
+       apartamento: [{ value: '', disabled: true }, Validators.required]  // ✅ Inicia desabilitado
+    });
+    
+    // Listener para mudanças no condomínio
+    this.condominioForm.get('condominio')?.valueChanges.subscribe(async (slug) => {
+      if (slug) {
+        await this.onCondominioChange(slug);
+      }
+    });
+    
+    // Listener para mudanças no bloco
+    this.condominioForm.get('bloco')?.valueChanges.subscribe(async (blocoId) => {
+      if (blocoId && this.slugAtual) {
+        await this.onBlocoChange(blocoId);
+      }
+    });
   }
 
   /**
-   * ✅ Carrega dados do usuário do backend
+   * Preenche apenas o condomínio se o usuário já tiver cadastrado
+   */
+  private async preencherCondominioSeJaExiste(): Promise<void> {
+    try {
+      const userId = this.getUserId();
+      const token = this.getToken();
+
+      if (!userId || !token) return;
+
+      const user = await this.userService.fetchUserData(userId, token);
+      
+      if (user && user.nomeCondominio) {
+        // Encontra o condomínio pelo nome
+        const cond = this.condominios.find(c => 
+          c.nome.toLowerCase() === user.nomeCondominio?.toLowerCase()
+        );
+        
+        if (cond) {
+          // ✅ Só preenche o condomínio (isso vai disparar o onCondominioChange)
+          this.condominioForm.patchValue({ condominio: cond.slug });
+        }
+      }
+    } catch (error) {
+      console.error('❌ Erro ao verificar condomínio do usuário:', error);
+    }
+  }
+  /**
+   * Carrega lista de condomínios
+   */
+  private async carregarCondominios(): Promise<void> {
+    try {
+      const token = this.getToken();
+      this.condominios = await this.condominioService.listarCondominios(token);
+      
+      this.condominioOptions = this.condominios.map(c => ({
+        label: c.nome,
+        value: c.slug
+      })).sort((a, b) => a.label.localeCompare(b.label)); // ✅ Ordena A-Z
+      
+      console.log('✅ Condomínios carregados:', this.condominioOptions.length);
+    } catch (error) {
+      console.error('❌ Erro ao carregar condomínios:', error);
+      this.showError('Erro', 'Não foi possível carregar os condomínios.');
+    }
+  }
+
+  /**
+   * Quando seleciona um condomínio
+   */
+  private async onCondominioChange(slug: string): Promise<void> {
+    try {
+      this.slugAtual = slug;
+      this.condominioSelecionado = this.condominios.find(c => c.slug === slug) || null;
+      
+      // Limpa e desabilita blocos e apartamentos
+      this.blocoOptions = [];
+      this.apartamentoOptions = [];
+      this.condominioForm.get('bloco')?.disable();
+      this.condominioForm.get('apartamento')?.disable();
+      this.condominioForm.patchValue({ bloco: '', apartamento: '' }, { emitEvent: false });
+      
+      // Carrega blocos
+      const token = this.getToken();
+      const blocos = await this.condominioService.listarBlocos(slug, token);
+      
+      this.blocoOptions = blocos
+        .map(b => ({ label: b.blocoNome, value: b.blocoId }))
+        .sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true }));
+      
+      // Habilita bloco se tem opções
+      if (this.blocoOptions.length > 0) {
+        this.condominioForm.get('bloco')?.enable();
+      }
+      
+      console.log('✅ Blocos carregados:', this.blocoOptions.length);
+      
+      // ✅ NOVO: Preenche bloco e apartamento se o usuário já tiver cadastrado
+      await this.preencherBlocoEApartamentoSeExistem();
+      
+    } catch (error) {
+      console.error('❌ Erro ao carregar blocos:', error);
+      this.showError('Erro', 'Não foi possível carregar os blocos.');
+    }
+  }
+
+  /**
+   * Preenche bloco e apartamento se o usuário já tiver cadastrado
+   */
+  private async preencherBlocoEApartamentoSeExistem(): Promise<void> {
+    try {
+      const userId = this.getUserId();
+      const token = this.getToken();
+
+      if (!userId || !token) return;
+
+      const user = await this.userService.fetchUserData(userId, token);
+      
+      if (user && user.bloco) {
+        // Aguarda um pouco para garantir que blocos foram carregados
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+        // Preenche bloco (isso vai disparar o onBlocoChange)
+        this.condominioForm.patchValue({ bloco: user.bloco });
+        
+        // Se tem apartamento, aguarda carregar apartamentos e preenche
+        if (user.apartamento) {
+          await new Promise(resolve => setTimeout(resolve, 300));
+          this.condominioForm.patchValue({ apartamento: user.apartamento });
+        }
+        
+        console.log('✅ Bloco e apartamento preenchidos automaticamente');
+      }
+    } catch (error) {
+      console.error('❌ Erro ao preencher bloco/apartamento:', error);
+    }
+  }
+
+  /**
+   * Quando seleciona um bloco
+   */
+  private async onBlocoChange(blocoId: string): Promise<void> {
+    try {
+      // Limpa apartamentos
+      this.apartamentoOptions = [];
+      this.condominioForm.get('apartamento')?.disable();  // ✅ Desabilita
+      this.condominioForm.patchValue({ apartamento: '' }, { emitEvent: false });
+      
+      // Carrega apartamentos
+      const token = this.getToken();
+      const apartamentos = await this.condominioService.listarApartamentos(
+        this.slugAtual, 
+        blocoId, 
+        token
+      );
+      
+      this.apartamentoOptions = apartamentos.map(apt => ({
+        label: apt,
+        value: apt
+      })).sort((a, b) => parseInt(a.value) - parseInt(b.value)); // ✅ Ordena numericamenteTentar novamente
+      
+      // ✅ Habilita apartamento se tem opções
+      if (this.apartamentoOptions.length > 0) {
+        this.condominioForm.get('apartamento')?.enable();
+      }
+
+      console.log('✅ Apartamentos carregados:', this.apartamentoOptions.length);
+    } catch (error) {
+      console.error('❌ Erro ao carregar apartamentos:', error);
+      this.showError('Erro', 'Não foi possível carregar os apartamentos.');
+    }
+  }
+
+  /**
+   * Carrega dados do usuário
    */
   private async carregarDadosUsuario(): Promise<void> {
     this.carregandoDados = true;
@@ -76,50 +255,56 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
         return;
       }
 
-      // Busca dados do usuário
       const user = await this.userService.fetchUserData(userId, token);
       console.log('📦 Dados do usuário carregados:', user);
 
-      // Preenche o formulário
-      if (user) {
-        this.condominioForm.patchValue({
-          pais: user.pais?.trim() || 'BRASIL',
-          estado: user.estado?.trim() || 'RN',
-          nomeCondominio: user.nomeCondominio?.trim() || '',
-          bloco: user.bloco?.trim() || '',
-          apartamento: user.apartamento?.trim() || ''
-        });
-
-        // ✅ Força atualização do estado de validação
-        this.condominioForm.markAllAsTouched();
-        this.condominioForm.updateValueAndValidity();
-
-        console.log('✅ Formulário preenchido:', this.condominioForm.value);
-        console.log('✅ Formulário válido:', this.condominioForm.valid);
+      if (user && user.nomeCondominio) {
+        // Encontra o condomínio pelo nome
+        const cond = this.condominios.find(c => 
+          c.nome.toLowerCase() === user.nomeCondominio?.toLowerCase()
+        );
+        
+        if (cond) {
+          this.slugAtual = cond.slug;
+          this.condominioSelecionado = cond;
+          
+          // Carrega blocos
+          await this.onCondominioChange(cond.slug);
+          
+          // Aguarda um pouco para garantir que blocos foram carregados
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          // Preenche formulário
+          this.condominioForm.patchValue({
+            condominio: cond.slug,
+            bloco: user.bloco || '',
+            apartamento: user.apartamento || ''
+          }, { emitEvent: false });
+          
+          // Se tem bloco, carrega apartamentos
+          if (user.bloco) {
+            await this.onBlocoChange(user.bloco);
+          }
+        }
       }
+
+      this.condominioForm.markAllAsTouched();
+      this.condominioForm.updateValueAndValidity();
+      
+      console.log('✅ Formulário preenchido:', this.condominioForm.value);
 
     } catch (error) {
       console.error('❌ Erro ao carregar dados do usuário:', error);
-      this.showError('Erro', 'Não foi possível carregar seus dados. Tente novamente.');
+      this.showError('Erro', 'Não foi possível carregar seus dados.');
     } finally {
       this.carregandoDados = false;
     }
   }
 
-  initForm(): void {
-    this.condominioForm = this.fb.group({
-      pais: ['BRASIL', Validators.required],
-      estado: ['RN', Validators.required],
-      nomeCondominio: ['', [Validators.required, Validators.minLength(3)]],
-      bloco: ['', Validators.required],
-      apartamento: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]]
-    });
-  }
-
   async salvarCondominio(): Promise<void> {
     if (this.condominioForm.invalid) {
       this.markFormGroupTouched(this.condominioForm);
-      this.showWarning('Atenção', 'Por favor, preencha todos os campos obrigatórios corretamente.');
+      this.showWarning('Atenção', 'Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
@@ -129,19 +314,18 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
       const dados = this.condominioForm.value;
       const userId = this.getUserId();
       const token = this.getToken();
-      const posicaoAtual = 3; // Esta tela é posição 3
+      const posicaoAtual = 3;
       const novaPosicao = posicaoAtual + 1;
 
-      console.log('🔄 Salvando dados do condomínio...');
+      console.log('📄 Salvando dados do condomínio...');
 
-      // ✅ ÚNICO PONTO DE ATUALIZAÇÃO: Envia tudo junto pro backend
       await this.http.patch(
         `${this.apiUrl}/users/${userId}/posicao-cadastro`,
         { 
           posicaoCadastroComplementar: novaPosicao,
-          pais: dados.pais,
-          estado: dados.estado,
-          nomeCondominio: dados.nomeCondominio,
+          pais: this.condominioSelecionado?.pais || 'BRASIL',
+          estado: this.condominioSelecionado?.estado || 'RN',
+          nomeCondominio: this.condominioSelecionado?.nome || '',
           bloco: dados.bloco,
           apartamento: dados.apartamento
         },
@@ -155,13 +339,13 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
 
       console.log(`✅ Backend atualizado - Posição: ${novaPosicao}`);
 
-      // ✅ Atualiza o cache local com a nova posição e dados
+      // Atualiza cache local
       const usuarioAtual = this.userService.getCurrentUser();
       if (usuarioAtual) {
         usuarioAtual.posicaoCadastroComplementar = novaPosicao;
-        usuarioAtual.pais = dados.pais;
-        usuarioAtual.estado = dados.estado;
-        usuarioAtual.nomeCondominio = dados.nomeCondominio;
+        usuarioAtual.pais = this.condominioSelecionado?.pais || 'BRASIL';
+        usuarioAtual.estado = this.condominioSelecionado?.estado || 'RN';
+        usuarioAtual.nomeCondominio = this.condominioSelecionado?.nome || '';
         usuarioAtual.bloco = dados.bloco;
         usuarioAtual.apartamento = dados.apartamento;
         
@@ -178,17 +362,12 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
 
     } catch (error: any) {
       console.error('❌ Erro ao salvar dados do condomínio:', error);
-
       this.showError('Erro', 'Não foi possível salvar os dados. Tente novamente.');
     } finally {
       this.loading = false;
     }
   }
 
-
-  /**
-   * ✅ Métodos para exibir mensagens toast centralizadas
-   */
   private showSuccess(summary: string, detail: string): void {
     this.messageService.add({
       severity: 'success',
@@ -218,17 +397,6 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
       key: 'tc'
     });
   }
-
-  private showInfo(summary: string, detail: string): void {
-    this.messageService.add({
-      severity: 'info',
-      summary: summary,
-      detail: detail,
-      life: 3000,
-      key: 'tc'
-    });
-  }
-  // ❌ REMOVIDO: método logout() - deve estar no menu-bar component
 
   private getUserId(): string {
     return localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';

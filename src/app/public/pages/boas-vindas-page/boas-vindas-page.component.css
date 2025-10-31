@@ -77,14 +77,14 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 1.5rem;
-  background: #fff;
+  background: #F1F8E9;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 
 .start-button {
-  width: 100%;
-  max-width: 400px;
+  width: 80%;
+  max-width: 300px;
   padding: 1.25rem;
   font-size: 1.25rem;
   font-weight: 600;
@@ -150,8 +150,8 @@
   }
   
   .start-button {
-    padding: 1rem;
-    font-size: 1rem;
+    padding: 0.4rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -188,7 +188,6 @@
   }
   
   .start-button {
-    max-width: 450px;
     font-size: 1.3rem;
   }
 
