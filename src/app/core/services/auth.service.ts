@@ -52,7 +52,7 @@ export interface ResetPasswordRequest {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = environment.apiUrl + '/auth';
+  private readonly apiBaseUrl = environment.apiBaseUrl + '/auth';
 
   constructor(
     private http: HttpClient, 
@@ -68,7 +68,7 @@ export class AuthService {
     // Limpa autenticação antiga
     this.clearAuth();
     
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
+    return this.http.post<LoginResponse>(`${this.apiBaseUrl}/login`, credentials)
       .pipe(
         tap(response => {
           // Salva o token do backend
@@ -85,7 +85,7 @@ export class AuthService {
    * Registra um novo usuário
    */
   register(data: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, data, {
+    return this.http.post<RegisterResponse>(`${this.apiBaseUrl}/register`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -98,7 +98,7 @@ export class AuthService {
   forgotPassword(email: string): Observable<MessageResponse> {
     const data: ForgotPasswordRequest = { email };
     
-    return this.http.post<MessageResponse>(`${this.apiUrl}/forgot-password`, data, {
+    return this.http.post<MessageResponse>(`${this.apiBaseUrl}/forgot-password`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -111,7 +111,7 @@ export class AuthService {
   alterarSenha(email: string, codigo: string, novaSenha: string): Observable<MessageResponse> {
     const body: AlterarSenhaRequest = { email, codigo, novaSenha };
 
-    return this.http.post<MessageResponse>(`${this.apiUrl}/alterar-senha`, body, {
+    return this.http.post<MessageResponse>(`${this.apiBaseUrl}/alterar-senha`, body, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
@@ -122,7 +122,7 @@ export class AuthService {
   resetPassword(email: string, code: string, newPassword: string): Observable<MessageResponse> {
     const data: ResetPasswordRequest = { email, code, newPassword };
     
-    return this.http.post<MessageResponse>(`${this.apiUrl}/reset-password`, data, {
+    return this.http.post<MessageResponse>(`${this.apiBaseUrl}/reset-password`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -134,7 +134,7 @@ export class AuthService {
    */
   /*
   verifyToken(token: string): Observable<LoginResponse> {    
-    return this.http.get<LoginResponse>(`${this.apiUrl}/verify`, {
+    return this.http.get<LoginResponse>(`${this.apiAppBaseUrl}/verify`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -147,7 +147,7 @@ export class AuthService {
    * Realiza logout
    */
   logout(token: string): Observable<string> {
-    return this.http.post(`${this.apiUrl}/logout`, {}, {
+    return this.http.post(`${this.apiBaseUrl}/logout`, {}, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'

@@ -23,7 +23,7 @@ import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu
 export class CadastroComplementarPageSucessoComponent implements OnInit {
   
   loading = false;
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
 
   constructor(
     private router: Router,
@@ -42,7 +42,7 @@ export class CadastroComplementarPageSucessoComponent implements OnInit {
       const token = this.getToken();
 
       // ✅ Atualizar posição para POSICAO_MAXIMA (cadastro completo)
-      await this.http.patch(`${this.apiUrl}/users/${userId}/posicao-cadastro`,
+      await this.http.patch(`${this.apiBaseUrl}/users/${userId}/posicao-cadastro`,
         { posicaoCadastroComplementar: POSICAO_MAXIMA },
         {
           headers: new HttpHeaders({

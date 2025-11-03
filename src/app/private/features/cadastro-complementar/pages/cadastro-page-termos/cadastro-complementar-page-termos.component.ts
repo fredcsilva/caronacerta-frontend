@@ -47,7 +47,7 @@ export class CadastroComplementarTermosComponent implements OnInit {
   textoTermosCondicoes: string = '';
   textoPoliticaPrivacidade: string = '';
   
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
   private haptic = inject(HapticService);
 
   constructor(
@@ -162,7 +162,7 @@ export class CadastroComplementarTermosComponent implements OnInit {
 
       // Envia tudo junto pro backend
       await this.http.patch(
-        `${this.apiUrl}/users/${userId}/posicao-cadastro`,
+        `${this.apiBaseUrl}/users/${userId}/posicao-cadastro`,
         { 
           posicaoCadastroComplementar: novaPosicao,
           aceitouTermos: true,

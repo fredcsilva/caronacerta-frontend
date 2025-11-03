@@ -21,13 +21,13 @@ export interface BlocoDTO {
 })
 export class CondominioService {
   
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
 
   constructor(private http: HttpClient) {}
 
   async listarCondominios(token: string): Promise<CondominioDTO[]> {
     return firstValueFrom(
-      this.http.get<CondominioDTO[]>(`${this.apiUrl}/condominios`, {
+      this.http.get<CondominioDTO[]>(`${this.apiBaseUrl}/condominios`, {
         headers: new HttpHeaders({
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ export class CondominioService {
 
   async listarBlocos(slug: string, token: string): Promise<BlocoDTO[]> {
     return firstValueFrom(
-      this.http.get<BlocoDTO[]>(`${this.apiUrl}/condominios/${slug}/blocos`, {
+      this.http.get<BlocoDTO[]>(`${this.apiBaseUrl}/condominios/${slug}/blocos`, {
         headers: new HttpHeaders({
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export class CondominioService {
 
   async listarApartamentos(slug: string, blocoId: string, token: string): Promise<string[]> {
     return firstValueFrom(
-      this.http.get<string[]>(`${this.apiUrl}/condominios/${slug}/blocos/${blocoId}/apartamentos`, {
+      this.http.get<string[]>(`${this.apiBaseUrl}/condominios/${slug}/blocos/${blocoId}/apartamentos`, {
         headers: new HttpHeaders({
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

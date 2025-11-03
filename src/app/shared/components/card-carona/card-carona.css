@@ -43,6 +43,7 @@
 .dados small {
   color: #555;
   font-size: 0.85rem;
+  margin-left: 0.3rem;
 }
 
 .endereco {
@@ -84,7 +85,7 @@
 /* Ícones de origem e destino */
 .origem-icon {
   font-size: 0.7rem;
-  color: #7E57C2; /* roxo */
+  color: #BEBEBE; /* cinza */
 }
 
 .destino-icon {

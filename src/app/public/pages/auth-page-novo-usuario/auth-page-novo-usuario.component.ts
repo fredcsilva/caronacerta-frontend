@@ -73,6 +73,7 @@ export class AuthPageNovoUsuarioComponent {
 
     this.isLoading = true;
 
+    console.log('📨 Enviando requisição para registrar...');
     this.authService.register(data).subscribe({
       next: (res) => {
         console.log('✅ Usuário criado! Resposta:', res);
@@ -80,24 +81,25 @@ export class AuthPageNovoUsuarioComponent {
         this.haptic.mediumTap();
         
         console.log('🚀 Navegando para /tela-sucesso...');
-        // Navega para tela de sucesso com configuração personalizada
+
         this.router.navigate(['/tela-sucesso'], {
           state: {
             title: 'Novo usuário criado com sucesso!',
-            message: 'Acesse o seu e-mail para confirmar e finalizar a criação do usuário.',
+             message: 'Acesse o seu <i class=\u0022pi pi-envelope\u0022 style=\u0022color: var(--primary-color); font-size: 1.1rem; vertical-align: middle;\u0022></i> <strong>e-mail</strong> para confirmar e finalizar a criação do usuário.',
             buttonText: 'Faça seu Login, agora!',
             buttonRoute: '/login',
             showBackButton: true,
             backRoute: '/cadastro'
           }
         });
-        
+                
         // Limpa os campos para caso o usuário volte
         this.nomeCompleto = '';
         this.email = '';
         this.senha = '';
       },
       error: (err) => {
+        console.error('❌ Entrou no ERROR! Erro:', err);
         this.isLoading = false;
         this.haptic.heavyTap();
 

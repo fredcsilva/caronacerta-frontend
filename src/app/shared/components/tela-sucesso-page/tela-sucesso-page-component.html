@@ -1,13 +1,13 @@
 <div class="success-container">
   <div class="success-content">
     <div class="success-icon-wrapper">
-      <div class="success-icon-circle">
-        <i class="pi pi-check success-icon"></i>
+      <div class="success-icon">
+        <i class="pi pi-check-circle"></i>
       </div>
     </div>
     
     <h2 class="success-title">{{ config.title }}</h2>
-    <p class="success-message" [innerHTML]="config.message"></p>
+    <p class="success-message" *ngIf="config.message" [innerHTML]="config.message"></p>
   </div>
   
   <div class="button-section">

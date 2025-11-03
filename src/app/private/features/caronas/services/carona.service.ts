@@ -11,7 +11,7 @@ import { environment } from '../../../../../environments/environment';
   providedIn: 'root'
 })
 export class CaronaService {
-  private readonly apiUrl = `${environment.apiUrl || 'http://localhost:8080/api'}/caronas`;
+  private readonly apiBaseUrl = `${environment.apiBaseUrl || 'http://localhost:8081/api'}/caronas`;
 
   constructor(private http: HttpClient) {}
 
@@ -49,7 +49,7 @@ export class CaronaService {
       if (filtros.pageSize) params = params.set('pageSize', filtros.pageSize.toString());
     }
 
-    return this.http.get<Carona[]>(this.apiUrl, { 
+    return this.http.get<Carona[]>(this.apiBaseUrl, { 
       params, 
       headers: this.getAuthHeaders() 
     });
@@ -59,7 +59,7 @@ export class CaronaService {
    * Buscar carona por ID
    */
   buscarPorId(id: number): Observable<Carona> {
-    return this.http.get<Carona>(`${this.apiUrl}/${id}`, {
+    return this.http.get<Carona>(`${this.apiBaseUrl}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
@@ -68,7 +68,7 @@ export class CaronaService {
    * Criar nova carona
    */
   criar(carona: CreateCaronaDTO): Observable<Carona> {
-    return this.http.post<Carona>(this.apiUrl, carona, {
+    return this.http.post<Carona>(this.apiBaseUrl, carona, {
       headers: this.getAuthHeaders()
     });
   }
@@ -77,7 +77,7 @@ export class CaronaService {
    * Atualizar carona
    */
   atualizar(id: number, carona: UpdateCaronaDTO): Observable<Carona> {
-    return this.http.put<Carona>(`${this.apiUrl}/${id}`, carona, {
+    return this.http.put<Carona>(`${this.apiBaseUrl}/${id}`, carona, {
       headers: this.getAuthHeaders()
     });
   }
@@ -86,7 +86,7 @@ export class CaronaService {
    * Deletar carona
    */
   deletar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+    return this.http.delete<void>(`${this.apiBaseUrl}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
@@ -95,7 +95,7 @@ export class CaronaService {
    * Cancelar carona
    */
   cancelar(id: number, motivo?: string): Observable<Carona> {
-    return this.http.patch<Carona>(`${this.apiUrl}/${id}/cancelar`, 
+    return this.http.patch<Carona>(`${this.apiBaseUrl}/${id}/cancelar`, 
       { motivo }, 
       { headers: this.getAuthHeaders() }
     );
@@ -105,7 +105,7 @@ export class CaronaService {
    * Minhas caronas como motorista
    */
   minhasCaronasMotorista(): Observable<Carona[]> {
-    return this.http.get<Carona[]>(`${this.apiUrl}/minhas-caronas/motorista`, {
+    return this.http.get<Carona[]>(`${this.apiBaseUrl}/minhas-caronas/motorista`, {
       headers: this.getAuthHeaders()
     });
   }
@@ -114,7 +114,7 @@ export class CaronaService {
    * Minhas caronas como passageiro
    */
   minhasCaronasPassageiro(): Observable<Carona[]> {
-    return this.http.get<Carona[]>(`${this.apiUrl}/minhas-caronas/passageiro`, {
+    return this.http.get<Carona[]>(`${this.apiBaseUrl}/minhas-caronas/passageiro`, {
       headers: this.getAuthHeaders()
     });
   }

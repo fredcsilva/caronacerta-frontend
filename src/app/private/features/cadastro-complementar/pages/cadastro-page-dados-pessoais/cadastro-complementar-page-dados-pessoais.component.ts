@@ -61,7 +61,7 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
   readonly MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
   readonly ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
   
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
   private haptic = inject(HapticService);
   
   minDataNascimento!: Date;
@@ -296,7 +296,7 @@ export class CadastroComplementarPageDadosPessoaisComponent implements OnInit {
 
       // Envia dados para o backend
       const response: any = await this.http.patch(
-        `${this.apiUrl}/users/${userId}/posicao-cadastro`,
+        `${this.apiBaseUrl}/users/${userId}/posicao-cadastro`,
         payload,
         {
           headers: new HttpHeaders({

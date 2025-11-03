@@ -1,24 +1,41 @@
 .alterar-senha-container {
-  min-height: 100vh;
+  height: 100vh;
+  background-color: var(--background-color);
   display: flex;
   flex-direction: column;
-  background-color: var(--background-color);
+  padding: 0;
+  padding-top: 80px;
   overflow-y: auto;
-  width: 100%;
-  padding-top: 72px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-.alterar-senha-content {
+.content-wrapper {
   flex: 1;
+  padding: 2rem 1rem;
+  padding-bottom: 3rem;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 1.25rem 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 100%;
   width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  text-align: center;
+}
+
+::ng-deep .p-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+::ng-deep .p-card .p-card-body {
+  padding: 0 !important;
+}
+
+.card-content {
+  padding: 2rem;
 }
 
 .icon-section {
@@ -30,11 +47,11 @@
 }
 
 .lock-icon {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   color: var(--primary-color);
   background: linear-gradient(135deg, rgba(126, 87, 194, 0.1), rgba(126, 87, 194, 0.05));
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -44,6 +61,7 @@
 
 .info-section {
   margin-bottom: 1.25rem;
+  text-align: center;
 }
 
 .info-title {
@@ -84,7 +102,6 @@
   text-align: left;
 }
 
-/* Campos de texto e código */
 .input-field {
   width: 100%;
   padding: 0.875rem 1rem;
@@ -106,7 +123,6 @@
   box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
 }
 
-/* Campos de senha (PrimeNG p-password) */
 :host ::ng-deep .custom-password {
   width: 100%;
 }
@@ -137,7 +153,6 @@
   cursor: not-allowed;
 }
 
-/* Ícone de mostrar/ocultar senha */
 :host ::ng-deep .custom-password .p-icon {
   color: rgba(66, 66, 66, 0.6);
   cursor: pointer;
@@ -147,7 +162,6 @@
   color: var(--primary-color);
 }
 
-/* Botão principal */
 .submit-button {
   width: 100% !important;
   background-color: var(--primary-color) !important;
@@ -179,7 +193,6 @@
   transform: none !important;
 }
 
-/* Link "Fazer login" */
 .login-section {
   display: flex;
   justify-content: center;
@@ -209,7 +222,6 @@
   text-decoration: underline;
 }
 
-/* Overlay de carregamento */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -225,6 +237,66 @@
 
 @media (max-width: 768px) {
   .alterar-senha-container {
-    padding-top: 64px; /* ✅ ADICIONAR */
+    padding-top: 72px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  
+  .content-wrapper {
+    padding: 1rem 0.5rem;
+    padding-bottom: 2rem;
+    min-height: min-content;
+  }
+
+  ::ng-deep .p-card {
+    margin-bottom: 1rem;
+  }
+
+  .card-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .lock-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (min-width: 769px) {
+  .alterar-senha-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .alterar-senha-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+
+  .alterar-senha-container::-webkit-scrollbar-thumb {
+    background: rgba(126, 87, 194, 0.3);
+    border-radius: 10px;
+  }
+
+  .alterar-senha-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(126, 87, 194, 0.5);
+  }
+}
+
+@media (max-width: 360px) {
+  .lock-icon {
+    font-size: 1.75rem;
+    width: 55px;
+    height: 55px;
+  }
+  
+  .icon-section {
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-content {
+    padding: 1rem 0.75rem;
   }
 }

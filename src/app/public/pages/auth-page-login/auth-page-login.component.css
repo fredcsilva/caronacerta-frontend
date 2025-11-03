@@ -1,18 +1,24 @@
 .login-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #F1F8E9;
   padding: 2rem 1rem;
-  padding-top: 88px; /* Altura da barra de menu fixa + margem */
+  padding-top: 88px;
+  padding-bottom: 3rem; /* ✅ ADICIONAR - espaço extra no final */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .login-content {
-  flex: 1;
+  flex: 0 0 auto; /* ✅ ADICIONAR - evita compressão do conteúdo */
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
+  padding-bottom: 2.5rem; /* ✅ ADICIONAR - mais espaço embaixo */
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -348,6 +354,7 @@
 @media (min-width: 768px) {
   .login-content {
     padding: 3rem 2rem;
+    padding-bottom: 3rem; /* ✅ ADICIONAR */
     max-width: 600px;
   }
 
@@ -369,7 +376,8 @@
 
   .login-container {
     padding: 0rem;
-    padding-top: 88px; 
+    padding-top: 88px;
+    padding-bottom: 4rem; /* ✅ ADICIONAR - ainda mais espaço em desktop */
   }
 }
 
@@ -389,4 +397,60 @@
 /* Remove o ícone de mostrar/ocultar quando desabilitado */
 .custom-password.p-disabled .p-password-toggle-icon {
   display: none;
+}
+
+/* ✅ ADICIONAR scrollbar customizada para desktop */
+@media (min-width: 769px) {
+  .login-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .login-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+
+  .login-container::-webkit-scrollbar-thumb {
+    background: rgba(126, 87, 194, 0.3);
+    border-radius: 10px;
+  }
+
+  .login-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(126, 87, 194, 0.5);
+  }
+}
+
+/* ✅ AJUSTE PARA 1024x600 - Título muito junto ao topo */
+@media (min-width: 1000px) and (max-height: 650px) {
+  .login-header {
+    margin-top: 2rem; /* ✅ Afasta do topo */
+    margin-bottom: 2rem;
+  }
+}
+
+/* ✅ AJUSTE PARA MOBILE ALTO (414x896, 390x844, 412x915) - Reduzir distância */
+@media (min-width: 390px) and (max-width: 414px) and (min-height: 800px) {
+  .login-content {
+    padding-top: 1rem; /* ✅ REDUZIDO de 2rem */
+  }
+  
+  .login-header {
+    margin-bottom: 1.5rem; /* ✅ REDUZIDO de 2rem */
+  }
+}
+
+/* ✅ 360x740 - Mantém como está (referência perfeita) */
+@media (min-width: 350px) and (max-width: 370px) and (min-height: 700px) and (max-height: 760px) {
+  /* Não altera nada - está perfeito */
+}
+
+/* ✅ AJUSTE FINO para tablets em portrait (768x1024) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .login-content {
+    padding-top: 2.5rem;
+  }
+  
+  .login-header {
+    margin-bottom: 2.5rem;
+  }
 }

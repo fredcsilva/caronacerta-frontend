@@ -1,2 +1,11 @@
 # Comando para iniciar o projeto
 $ npm start
+
+# Docker
+$ docker rm -f carona-certa-frontend (remove container)
+$ docker rmi carona-certa-frontend (remove imagem)
+$ docker build --no-cache --pull -t carona-certa-frontend . (gera imagem)
+$ docker run -d -p 4200:4200 --name carona-certa-frontend carona-certa-frontend (inicia container)
+
+# Rebuild com hot reload
+docker-compose build --no-cache carona-certa-frontend

@@ -6,10 +6,12 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
-import { ProgressSpinnerModule } from 'primeng/progressspinner'; // ✅ Import adicionado
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Card } from 'primeng/card';
 import { HapticService } from '../../../core/services/haptic.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MenuBarComponent } from '../../../shared/components/menu-bar/menu-bar.component';
 
 @Component({
   selector: 'app-alterar-senha',
@@ -21,7 +23,9 @@ import { HttpErrorResponse } from '@angular/common/http';
     InputTextModule,
     PasswordModule,
     MessageModule,
-    ProgressSpinnerModule // ✅ Incluído aqui
+    ProgressSpinnerModule,
+    MenuBarComponent,
+    Card
   ],
   templateUrl: './auth-page-alterar-senha.component.html',
   styleUrls: ['./auth-page-alterar-senha.component.css']
@@ -65,18 +69,22 @@ export class AuthPageAlterarSenhaComponent implements OnInit {
 
     this.isLoading = true;
 
-    const body = {
-      email: this.email,
-      codigo: this.codigo,
-      novaSenha: this.novaSenha
-    };
-
     this.authService.alterarSenha(this.email, this.codigo, this.novaSenha).subscribe({      
       next: (res) => {
         console.log('✅ Senha alterada com sucesso:', res);
         this.isLoading = false;
         this.haptic.mediumTap();
-        this.router.navigate(['/tela-sucesso']);
+        
+        // ✅ Navega para tela de sucesso com configuração personalizada
+        this.router.navigate(['/tela-sucesso'], {
+          state: {
+            title: 'Senha alterada com sucesso!',
+            message: '', // ✅ Mensagem vazia
+            buttonText: 'Faça Login, agora!',
+            buttonRoute: '/login',
+            showBackButton: false // ✅ Sem botão de voltar
+          }
+        });
       },
       error: (err: HttpErrorResponse) => {
         console.error('❌ Erro ao alterar senha:', err);
@@ -84,7 +92,7 @@ export class AuthPageAlterarSenhaComponent implements OnInit {
         this.haptic.heavyTap();
         this.message = 'Erro ao alterar senha. Verifique os dados e tente novamente.';
       }
-    });
+    }); // ✅ ADICIONADO - Fecha o subscribe
   }
 
   voltarLogin() {

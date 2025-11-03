@@ -36,7 +36,7 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
   loading = false;
   carregandoDados = true;
   
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
   private haptic = inject(HapticService);
   
   // Opções dos dropdowns
@@ -320,7 +320,7 @@ export class CadastroComplementarPageCondominioComponent implements OnInit {
       console.log('📄 Salvando dados do condomínio...');
 
       await this.http.patch(
-        `${this.apiUrl}/users/${userId}/posicao-cadastro`,
+        `${this.apiBaseUrl}/users/${userId}/posicao-cadastro`,
         { 
           posicaoCadastroComplementar: novaPosicao,
           pais: this.condominioSelecionado?.pais || 'BRASIL',

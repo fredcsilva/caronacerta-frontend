@@ -22,44 +22,44 @@
 
     <!-- Form -->
     <form class="register-form" (ngSubmit)="onConfirmar()">
-      <!-- Nome Completo -->
-      <div class="form-field">
+     <div class="form-field">
         <label for="nomeCompleto" class="field-label">Nome Completo</label>
         <input
           pInputText
           id="nomeCompleto"
+          name="nomeCompleto"
           type="text"
           [(ngModel)]="nomeCompleto"
-          name="nomeCompleto"
           (focus)="clearMessages()"
           placeholder="Digite seu nome completo"
+          autocomplete="name"
           class="input-field"
           required
         />
       </div>
 
-      <!-- E-mail -->
       <div class="form-field">
         <label for="email" class="field-label">E-mail</label>
         <input
           pInputText
           id="email"
+          name="email"
           type="email"
           [(ngModel)]="email"
-          name="email"
           (focus)="clearMessages()"
           placeholder="seu.email@exemplo.com"
+          autocomplete="email"
           class="input-field"
           required
         />
       </div>
 
-      <!-- Senha -->
       <div class="form-field">
         <label for="senha" class="field-label">Senha</label>
         <p-password
           [(ngModel)]="senha"
           name="senha"
+          [inputId]="'senha'"
           [toggleMask]="true"
           [feedback]="true"
           placeholder="Crie uma senha segura"

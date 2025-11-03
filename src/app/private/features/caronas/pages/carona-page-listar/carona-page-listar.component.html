@@ -1,14 +1,15 @@
 <!-- src/app/private/features/caronas/pages/carona-page-listar/carona-page-listar.component.html -->
 
+<!-- ✅ Menu-bar com logout -->
+<app-menu-bar
+  [title]="'Minhas Caronas'"
+  [showBackButton]="false"
+  [showLogoutButton]="true">
+</app-menu-bar>
+
 <div class="listar-caronas-container">
   <div class="content">
-    <h1>Minhas Caronas</h1>
     <p>Aqui você verá a lista de caronas disponíveis...</p>
-
-            <!-- ✅ Botão Logout -->
-    <button class="logout-button-content" (click)="logout()" title="Sair">
-      <i class="pi pi-sign-out"></i>
-    </button>
 
     <div class="lista-cards">
       <app-card-carona 

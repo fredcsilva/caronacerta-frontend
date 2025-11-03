@@ -43,7 +43,7 @@ export interface User {
   providedIn: 'root'
 })
 export class UserService {
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
 
   // ✅ BehaviorSubject para manter o estado do usuário logado
   private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -76,7 +76,7 @@ export class UserService {
     try {
       // ✅ Usa /users/me que já existe no backend
       const user = await this.http.get<User>(
-        `${this.apiUrl}/users/me`,
+        `${this.apiBaseUrl}/users/me`,
         {
           headers: new HttpHeaders({
             'Authorization': `Bearer ${token}`,
@@ -130,7 +130,7 @@ export class UserService {
       return;
     }
 
-    this.http.get<User>(`${this.apiUrl}/users/me`, {
+    this.http.get<User>(`${this.apiBaseUrl}/users/me`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ export class UserService {
       return;
     }
 
-    this.http.put<User>(`${this.apiUrl}/users/me`, data, {
+    this.http.put<User>(`${this.apiBaseUrl}/users/me`, data, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'

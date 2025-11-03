@@ -9,6 +9,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { RippleModule } from 'primeng/ripple';
 import { BottomNavComponent } from '../../../../layout/bottom-nav/bottom-nav.component';
 import { CardCaronaComponent } from '../../../../../shared/components/card-carona/card-carona';
+import { MenuBarComponent } from '../../../../../shared/components/menu-bar/menu-bar.component'; // ✅ NOVO
 import { Carona } from '../../models/carona.model';
 import { CaronaService } from '../../services/carona.service';
 import { MessageService } from 'primeng/api';
@@ -23,7 +24,8 @@ import { HapticService } from '../../../../../core/services/haptic.service';
     TooltipModule,
     RippleModule,
     BottomNavComponent,
-    CardCaronaComponent
+    CardCaronaComponent,
+    MenuBarComponent // ✅ NOVO
   ],
   providers: [MessageService],
   templateUrl: './carona-page-listar.component.html',
@@ -44,9 +46,7 @@ export class CaronaPageListarComponent implements OnInit {
 
   ngOnInit(): void {
     this.configurarDockItems();
-    // ✅ Carrega o mock imediatamente
     this.carregarMockCaronas();
-    // ✅ Faz a requisição ao backend em background
     this.carregarCaronas();
   }
 
@@ -89,20 +89,16 @@ export class CaronaPageListarComponent implements OnInit {
     this.caronaService.listar().subscribe({
       next: (caronas) => {
         console.log('✅ Caronas recebidas do backend:', caronas);
-        // ✅ Comentado: não substitui o mock por enquanto
-        // this.caronas = caronas;
         this.loading = false;
       },
       error: (err) => {
         console.error('❌ Erro ao carregar caronas:', err);
         this.loading = false;
-        // ✅ Mock já está carregado, então não precisa fazer nada
       }
     });
   }
 
   private carregarMockCaronas(): void {
-    // ✅ Mock de caronas sempre visível
     this.caronas = [
       {
         id: 1,
@@ -170,7 +166,7 @@ export class CaronaPageListarComponent implements OnInit {
     }
   }
 
-   logout(): void {
+  logout(): void {
     this.haptic.lightTap();
     
     localStorage.removeItem('token');

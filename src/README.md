@@ -281,13 +281,13 @@ Edite os arquivos em `src/environments/`:
 // environment.ts (desenvolvimento)
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api'
+  apiBaseUrl: 'http://localhost:8081/api'
 };
 
 // environment.prod.ts (produção)
 export const environment = {
   production: true,
-  apiUrl: 'https://api.caronacerta.com.br'
+  apiBaseUrl: 'https://api.caronacerta.com.br'
 };
 ```
 

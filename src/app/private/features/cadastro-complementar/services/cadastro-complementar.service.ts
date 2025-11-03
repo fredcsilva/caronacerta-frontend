@@ -27,7 +27,7 @@ export const POSICOES_CADASTRO_COMPLEMENTAR: Record<number, string> = {
 })
 export class CadastroComplementarService {
   
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
 
   constructor(
     private router: Router,
@@ -106,7 +106,7 @@ export class CadastroComplementarService {
   atualizarPosicao(userId: string, posicao: number): Observable<any> {
     const token = this.getToken();
     
-    return this.http.patch(`${this.apiUrl}/users/${userId}/posicao-cadastro`, 
+    return this.http.patch(`${this.apiBaseUrl}/users/${userId}/posicao-cadastro`, 
       { posicaoCadastroComplementar: posicao },
       {
         headers: new HttpHeaders({

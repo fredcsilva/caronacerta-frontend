@@ -129,7 +129,7 @@ Crie o arquivo `src/environments/environment.ts`:
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api'
+  apiBaseUrl: 'http://localhost:8081/api'
 };
 ```
 
@@ -138,7 +138,7 @@ Para produção, crie `src/environments/environment.prod.ts`:
 ```typescript
 export const environment = {
   production: true,
-  apiUrl: 'https://api.caronacerta.com.br/api'
+  apiBaseUrl: 'https://api.caronacerta.com.br/api'
 };
 ```
 

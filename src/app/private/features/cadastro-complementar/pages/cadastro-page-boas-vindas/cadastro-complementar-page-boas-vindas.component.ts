@@ -27,7 +27,7 @@ import { UserService } from '../../../../../core/services/user.service';
 export class CadastroComplementarPageBoasVindasComponent implements OnInit {
   
   loading = false;
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
   private userService = inject(UserService);
 
   constructor(
@@ -69,7 +69,7 @@ export class CadastroComplementarPageBoasVindasComponent implements OnInit {
 
       // ✅ Atualiza posição no backend
       await this.http.patch(
-        `${this.apiUrl}/users/${userId}/posicao-cadastro`,
+        `${this.apiBaseUrl}/users/${userId}/posicao-cadastro`,
         { posicaoCadastroComplementar: novaPosicao },
         {
           headers: new HttpHeaders({

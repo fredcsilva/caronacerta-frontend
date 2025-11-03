@@ -17,9 +17,14 @@ export interface SuccessConfig {
 @Component({
   selector: 'app-tela-sucesso',
   standalone: true,
-  imports: [CommonModule, ButtonModule, RippleModule],
+  imports: [
+    CommonModule, 
+    ButtonModule, 
+    RippleModule
+  ],
   templateUrl: './tela-sucesso-page-component.html',
-  styleUrl: './tela-sucesso-page-component.css'
+  styleUrls: ['./tela-sucesso-page-component.css']
+
 })
 export class TelaSucessoPageComponent implements OnInit {
   private router = inject(Router);
@@ -27,30 +32,38 @@ export class TelaSucessoPageComponent implements OnInit {
   private haptic = inject(HapticService);
 
   config: SuccessConfig = {
-    title: 'Usuário(a) Criado(a)!',
-    message: '<em>Só falta uma etapa....</em><br><br>Acesse o seu <i class="pi pi-envelope"></i> <strong>e-mail</strong> e complete a criação do usuário.',
+    title: 'Processo Realizado com Sucesso!',
+    message: '',
     buttonText: 'Faça Login, agora!',
     buttonRoute: '/login',
     showBackButton: true,
     backRoute: '/cadastro'
   };
 
-  ngOnInit() {
-    // Obtém configuração passada via state do router
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state) {
-      this.config = { ...this.config, ...navigation.extras.state };
-    }
+ ngOnInit() {
+  const navigation = this.router.getCurrentNavigation();
+  const stateData = navigation?.extras?.state as Partial<SuccessConfig> | undefined;
 
-    // Ou via query params (fallback)
-    this.route.queryParams.subscribe(params => {
-      if (params['title']) this.config.title = params['title'];
-      if (params['message']) this.config.message = params['message'];
-      if (params['buttonText']) this.config.buttonText = params['buttonText'];
-      if (params['buttonRoute']) this.config.buttonRoute = params['buttonRoute'];
-      if (params['backRoute']) this.config.backRoute = params['backRoute'];
-    });
+  if (stateData) {
+    this.config = { ...this.config, ...stateData };
+  } else {
+    // Fallback via history.state (em caso de reload/F5)
+    const historyState = window.history.state as Partial<SuccessConfig>;
+    if (historyState && Object.keys(historyState).length > 0) {
+      this.config = { ...this.config, ...historyState };
+    }
   }
+
+  // Também mantém o fallback de query params
+  this.route.queryParams.subscribe(params => {
+    if (params['title']) this.config.title = params['title'];
+    if (params['message']) this.config.message = params['message'];
+    if (params['buttonText']) this.config.buttonText = params['buttonText'];
+    if (params['buttonRoute']) this.config.buttonRoute = params['buttonRoute'];
+    if (params['backRoute']) this.config.backRoute = params['backRoute'];
+  });
+}
+
 
   goToNextPage() {
     this.haptic.lightTap();

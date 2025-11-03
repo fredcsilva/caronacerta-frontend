@@ -13,7 +13,7 @@ export interface TermosPrivacidadeResponse {
 })
 export class ConfiguracaoAppService {
   
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:8080/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl || 'http://localhost:8081/api';
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +31,7 @@ export class ConfiguracaoAppService {
     });
 
     return this.http.get<TermosPrivacidadeResponse>(
-      `${this.apiUrl}/configuracoes/termos-privacidade`,
+      `${this.apiBaseUrl}/configuracoes/termos-privacidade`,
       { headers } // ✅ Enviar headers
     );
   }
