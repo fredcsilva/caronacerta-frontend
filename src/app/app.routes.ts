@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { BoasVindasComponent } from './components/boas-vindas/boas-vindas';
 import { LoginComponent } from './components/login/login';
 import { NovoUsuarioComponent } from './components/novo-usuario/novo-usuario';
 import { EsqueciSenhaComponent } from './components/esqueci-senha/esqueci-senha';
@@ -19,14 +18,13 @@ import { cadastroComplementarGuard } from './services/cadastro-complementar.guar
 
 export const routes: Routes = [
   { 
-    path: '', 
-    redirectTo: '/boas-vindas', 
-    pathMatch: 'full' 
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'boas-vindas'
   },
-  { 
-    path: 'boas-vindas', 
-    component: BoasVindasComponent,
-    data: { animation: 'BoasVindasPage' }
+  {
+    path: 'boas-vindas',
+    loadChildren: () => import('./features/boas-vindas/boas-vindas.routes').then(m => m.BOAS_VINDAS_ROUTES)
   },
   { 
     path: 'login', 
@@ -97,6 +95,6 @@ export const routes: Routes = [
   // Rota 404
   {
     path: '**',
-    redirectTo: '/boas-vindas'
+    redirectTo: ''
   }
 ];

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { HapticService } from '../../services/haptic.service';
+import { HapticService } from '../../../../services/haptic.service';
 
 @Component({
   selector: 'app-boas-vindas',

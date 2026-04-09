@@ -15,7 +15,7 @@
              (swipeleft)="nextSlide()" 
              (swiperight)="prevSlide()">
           <div class="image-container">
-            <img [src]="slide.image" [alt]="slide.title" class="slide-image">
+            <img [src]="slide.image" [alt]="slide.title" [title]="slide.title" class="slide-image">
           </div>
           <h2 class="slide-title">{{ slide.title }}</h2>
           <p class="slide-description">{{ slide.description }}</p>
@@ -25,12 +25,11 @@
   </div>
   
   <div class="button-section">
-    <button 
-      pButton 
+    <p-button 
       pRipple
       label="Começar!" 
       class="start-button"
-      (click)="goToLogin()">
-    </button>
+      (onClick)="goToLogin()">
+    </p-button>
   </div>
 </div>
